@@ -1,0 +1,4022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Screenshot Studio Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&family=Open+Sans:wght@400;500;600;700;800&family=Lato:wght@400;700;900&family=Oswald:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;500;600;700;900&family=PT+Sans:wght@400;700&family=Bebas+Neue&family=Archivo+Black&family=Righteous&family=Permanent+Marker&family=Bangers&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0b;
+            --bg-card: #141416;
+            --bg-elevated: #1c1c1f;
+            --border: #2a2a2e;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --accent: #0a84ff;
+            --accent-hover: #409cff;
+            --success: #30d158;
+            --warning: #ff9f0a;
+            --gradient-1: #667eea;
+            --gradient-2: #764ba2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .logo h1 {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .logo span {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Tabs */
+        .mode-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 20px;
+            background: var(--bg-elevated);
+            padding: 4px;
+            border-radius: 10px;
+        }
+
+        .mode-tab {
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .mode-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .mode-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .section {
+            margin-bottom: 22px;
+        }
+
+        .section-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 10px;
+        }
+
+        /* Device Selector */
+        .device-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .device-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .device-btn:hover {
+            border-color: var(--accent);
+            background: rgba(10, 132, 255, 0.1);
+        }
+
+        .device-btn.active {
+            border-color: var(--accent);
+            background: rgba(10, 132, 255, 0.15);
+            box-shadow: 0 0 20px rgba(10, 132, 255, 0.15);
+        }
+
+        .device-btn .icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .device-btn .name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .device-btn .size {
+            font-size: 9px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg-elevated);
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            background: rgba(10, 132, 255, 0.05);
+        }
+
+        .upload-area.has-image {
+            border-style: solid;
+            border-color: var(--success);
+        }
+
+        .upload-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .upload-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .upload-text strong {
+            color: var(--accent);
+        }
+
+        #screenshot-input, #batch-input {
+            display: none;
+        }
+
+        /* Batch Mode */
+        .batch-panel {
+            display: none;
+        }
+
+        .batch-panel.active {
+            display: block;
+        }
+
+        .batch-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 12px;
+        }
+
+        .batch-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .batch-item img {
+            width: 36px;
+            height: 64px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .batch-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .batch-item-name {
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .batch-item-size {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .batch-item-remove {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .batch-item-remove:hover {
+            color: #ff453a;
+        }
+
+        .batch-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+            padding: 10px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+        }
+
+        .batch-nav-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .batch-nav-btn:hover:not(:disabled) {
+            border-color: var(--accent);
+        }
+
+        .batch-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .batch-counter {
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* Text Inputs */
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 11px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* Font Preview in Select */
+        .font-select option {
+            padding: 8px;
+        }
+
+        /* Color Picker Row */
+        .color-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .color-picker-wrapper {
+            position: relative;
+        }
+
+        .color-picker-wrapper label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .color-picker-wrapper input[type="color"] {
+            width: 100%;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 3px;
+        }
+
+        /* Gradient Presets */
+        .gradient-presets {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .gradient-preset {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .gradient-preset:hover {
+            transform: scale(1.1);
+        }
+
+        .gradient-preset.active {
+            border-color: var(--text-primary);
+            box-shadow: 0 0 10px rgba(255,255,255,0.25);
+        }
+
+        /* Slider */
+        .slider-group {
+            margin-bottom: 12px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .slider-header label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .slider-value {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 5px;
+            border-radius: 3px;
+            background: var(--bg-elevated);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(10, 132, 255, 0.4);
+        }
+
+        /* Export Button */
+        .export-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .export-btn:active {
+            transform: translateY(0);
+        }
+
+        .export-btn.secondary {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            margin-top: 8px;
+        }
+
+        .export-btn.secondary:hover {
+            border-color: var(--accent);
+            box-shadow: none;
+        }
+
+        /* Canvas Area */
+        .canvas-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: radial-gradient(ellipse at center, #1a1a1f 0%, var(--bg-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-area::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(102, 126, 234, 0.02) 60deg, transparent 120deg);
+            animation: rotate 80s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .preview-container {
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 25px 50px rgba(0,0,0,0.5));
+        }
+
+        #preview-canvas {
+            max-height: calc(100vh - 80px);
+            max-width: 100%;
+            border-radius: 6px;
+        }
+
+        #export-canvas {
+            display: none;
+        }
+
+        /* Toggle */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .toggle-label {
+            font-size: 12px;
+            color: var(--text-primary);
+        }
+
+        .toggle {
+            width: 40px;
+            height: 22px;
+            background: var(--bg-elevated);
+            border-radius: 11px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: 1px solid var(--border);
+        }
+
+        .toggle.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .toggle.active::after {
+            transform: translateX(18px);
+        }
+
+        /* Collapsible Sections */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 8px 0;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header .section-title {
+            margin-bottom: 0;
+        }
+
+        .section-toggle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+
+        .section-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+        }
+
+        /* Badge */
+        .badge-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .badge-option {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .badge-option:hover {
+            border-color: var(--accent);
+        }
+
+        .badge-option.active {
+            background: rgba(10, 132, 255, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .canvas-area {
+                min-height: 60vh;
+            }
+        }
+
+        /* Scrollbar */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Device Category Tabs */
+        .device-category-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 10px;
+            background: var(--bg-elevated);
+            padding: 3px;
+            border-radius: 8px;
+        }
+
+        .device-category-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .device-category-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .device-category-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .device-category-tab .cat-icon {
+            font-size: 14px;
+        }
+
+        /* Device Dropdown */
+        .device-select {
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .device-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Frame Style Buttons */
+        .frame-styles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .frame-style-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .frame-style-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .frame-style-btn.active {
+            background: rgba(10, 132, 255, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .frame-style-btn .preview {
+            width: 24px;
+            height: 40px;
+            margin: 0 auto 4px;
+            border-radius: 4px;
+            border: 2px solid currentColor;
+        }
+
+        /* Background Type Selector */
+        .bg-type-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            margin-bottom: 12px;
+            background: var(--bg-elevated);
+            padding: 3px;
+            border-radius: 8px;
+        }
+
+        .bg-type-tab {
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .bg-type-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .bg-type-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Pattern Selector */
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .pattern-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pattern-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .pattern-btn.active {
+            background: rgba(10, 132, 255, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Mesh Gradient Controls */
+        .mesh-colors {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .mesh-color-input {
+            width: 100%;
+            height: 32px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        /* Logo Upload */
+        .logo-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg-elevated);
+            margin-bottom: 12px;
+        }
+
+        .logo-upload-area:hover {
+            border-color: var(--accent);
+        }
+
+        .logo-upload-area.has-logo {
+            border-style: solid;
+            border-color: var(--success);
+        }
+
+        .logo-preview {
+            max-width: 60px;
+            max-height: 60px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Position Grid */
+        .position-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+        }
+
+        .position-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .position-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .position-btn.active {
+            background: rgba(10, 132, 255, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Text Style Selector */
+        .text-styles {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .text-style-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 9px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .text-style-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .text-style-btn.active {
+            background: rgba(10, 132, 255, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .text-style-btn .preview-text {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .text-style-btn.neon .preview-text {
+            text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+            color: #0ff;
+        }
+
+        .text-style-btn.sticker .preview-text {
+            -webkit-text-stroke: 1px #000;
+            color: #fff;
+        }
+
+        /* Arrow Tool */
+        .arrow-tool-btn {
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .arrow-tool-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .arrow-tool-btn.active {
+            background: rgba(10, 132, 255, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Star Rating */
+        .star-rating-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .star-rating-input input {
+            flex: 1;
+        }
+
+        .star-preview {
+            color: #ffcc00;
+            font-size: 14px;
+        }
+
+        /* Multi-device Toggle */
+        .multi-device-config {
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        /* Template Presets */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .template-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .template-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .template-preview {
+            width: 100%;
+            aspect-ratio: 9/16;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .template-name {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Action Buttons Row */
+        .action-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .action-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            border-color: var(--accent);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Keyboard Shortcut Hints */
+        .shortcut-hint {
+            font-size: 9px;
+            color: var(--text-secondary);
+            background: var(--bg-dark);
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-left: 4px;
+        }
+
+        /* Color Picker Eye Dropper */
+        .eyedropper-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .eyedropper-btn:hover {
+            border-color: var(--accent);
+        }
+
+        /* Export Options */
+        .export-options {
+            margin-top: 12px;
+        }
+
+        .export-size-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .export-size-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .export-size-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .export-size-btn.selected {
+            background: rgba(10, 132, 255, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Arrow Canvas Overlay */
+        .arrow-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .arrow-overlay.active {
+            pointer-events: auto;
+            cursor: crosshair;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* Project Save/Load */
+        .project-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">📱</div>
+                <div>
+                    <h1>Screenshot Studio</h1>
+                    <span>Pro Edition</span>
+                </div>
+            </div>
+
+            <!-- Mode Tabs -->
+            <div class="mode-tabs">
+                <button class="mode-tab active" onclick="setMode('single')">Single</button>
+                <button class="mode-tab" onclick="setMode('batch')">Batch Export</button>
+            </div>
+
+            <!-- Device Selection -->
+            <div class="section">
+                <div class="section-title">Device</div>
+                <div class="device-category-tabs">
+                    <button class="device-category-tab active" data-cat="ios" onclick="selectDeviceCategory('ios')">
+                        <span class="cat-icon">📱</span>
+                        <span>iOS</span>
+                    </button>
+                    <button class="device-category-tab" data-cat="android" onclick="selectDeviceCategory('android')">
+                        <span class="cat-icon">🤖</span>
+                        <span>Android</span>
+                    </button>
+                    <button class="device-category-tab" data-cat="mac" onclick="selectDeviceCategory('mac')">
+                        <span class="cat-icon">💻</span>
+                        <span>Mac</span>
+                    </button>
+                    <button class="device-category-tab" data-cat="watch" onclick="selectDeviceCategory('watch')">
+                        <span class="cat-icon">⌚</span>
+                        <span>Watch</span>
+                    </button>
+                </div>
+                <select class="device-select" id="device-select" onchange="selectDevice(this.value)">
+                    <optgroup label="iOS Devices" id="ios-devices">
+                        <option value="iphone-6.9">iPhone 6.9" (1320×2868)</option>
+                        <option value="iphone-6.7">iPhone 6.7" (1290×2796)</option>
+                        <option value="iphone" selected>iPhone 6.5" (1242×2688)</option>
+                        <option value="iphone-5.5">iPhone 5.5" (1242×2208)</option>
+                        <option value="ipad">iPad 13" (2064×2752)</option>
+                        <option value="ipad-12.9">iPad 12.9" (2048×2732)</option>
+                        <option value="ipad-11">iPad 11" (1668×2388)</option>
+                    </optgroup>
+                </select>
+                <div class="toggle-group" style="margin-top: 10px;">
+                    <span class="toggle-label">Landscape Mode</span>
+                    <div class="toggle" id="landscape-mode" onclick="toggleOption('landscape-mode')"></div>
+                </div>
+            </div>
+
+            <!-- Single Mode Upload -->
+            <div class="section single-panel">
+                <div class="section-title">Screenshot</div>
+                <div class="upload-area" id="single-upload" onclick="document.getElementById('screenshot-input').click()">
+                    <div class="upload-icon">🖼️</div>
+                    <div class="upload-text">
+                        <strong>Click to upload</strong><br>
+                        or drag and drop
+                    </div>
+                </div>
+                <input type="file" id="screenshot-input" accept="image/*" onchange="handleImageUpload(event)">
+            </div>
+
+            <!-- Batch Mode -->
+            <div class="section batch-panel">
+                <div class="section-title">Screenshots (Batch)</div>
+                <div class="upload-area" id="batch-upload" onclick="document.getElementById('batch-input').click()">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">
+                        <strong>Select multiple images</strong><br>
+                        Same text applied to all
+                    </div>
+                </div>
+                <input type="file" id="batch-input" accept="image/*" multiple onchange="handleBatchUpload(event)">
+                
+                <div class="batch-list" id="batch-list"></div>
+                
+                <div class="batch-nav" id="batch-nav" style="display: none;">
+                    <button class="batch-nav-btn" onclick="navigateBatch(-1)">←</button>
+                    <span class="batch-counter" id="batch-counter">1 / 1</span>
+                    <button class="batch-nav-btn" onclick="navigateBatch(1)">→</button>
+                </div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Text & Typography</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="input-group">
+                        <label>Headline</label>
+                        <input type="text" id="headline" placeholder="Your Amazing Feature" oninput="render()">
+                    </div>
+                    <div class="input-group">
+                        <label>Subheadline</label>
+                        <textarea id="subheadline" placeholder="Describe what makes it special" oninput="render()"></textarea>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Headline Font</label>
+                            <select id="headline-font" onchange="render()">
+                                <option value="Inter" style="font-family: Inter">Inter</option>
+                                <option value="Poppins" style="font-family: Poppins">Poppins</option>
+                                <option value="Montserrat" style="font-family: Montserrat">Montserrat</option>
+                                <option value="Playfair Display" style="font-family: Playfair Display">Playfair Display</option>
+                                <option value="Roboto" style="font-family: Roboto">Roboto</option>
+                                <option value="Open Sans" style="font-family: Open Sans">Open Sans</option>
+                                <option value="Lato" style="font-family: Lato">Lato</option>
+                                <option value="Oswald" style="font-family: Oswald">Oswald</option>
+                                <option value="Raleway" style="font-family: Raleway">Raleway</option>
+                                <option value="Nunito" style="font-family: Nunito">Nunito</option>
+                                <option value="Merriweather" style="font-family: Merriweather">Merriweather</option>
+                                <option value="Source Sans 3" style="font-family: Source Sans 3">Source Sans</option>
+                                <option value="PT Sans" style="font-family: PT Sans">PT Sans</option>
+                                <option value="Bebas Neue" style="font-family: Bebas Neue">Bebas Neue</option>
+                                <option value="Archivo Black" style="font-family: Archivo Black">Archivo Black</option>
+                                <option value="Righteous" style="font-family: Righteous">Righteous</option>
+                                <option value="Permanent Marker" style="font-family: Permanent Marker">Permanent Marker</option>
+                                <option value="Bangers" style="font-family: Bangers">Bangers</option>
+                                <option value="Pacifico" style="font-family: Pacifico">Pacifico</option>
+                                <option value="-apple-system">System (SF Pro)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Body Font</label>
+                            <select id="body-font" onchange="render()">
+                                <option value="Inter">Inter</option>
+                                <option value="Poppins">Poppins</option>
+                                <option value="Montserrat">Montserrat</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Raleway">Raleway</option>
+                                <option value="Nunito">Nunito</option>
+                                <option value="Source Sans 3">Source Sans</option>
+                                <option value="PT Sans">PT Sans</option>
+                                <option value="-apple-system">System (SF Pro)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Headline Weight</label>
+                            <select id="headline-weight" onchange="render()">
+                                <option value="400">Regular</option>
+                                <option value="500">Medium</option>
+                                <option value="600">Semibold</option>
+                                <option value="700" selected>Bold</option>
+                                <option value="800">Extra Bold</option>
+                                <option value="900">Black</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="display: flex; gap: 8px; align-items: flex-end;">
+                            <div style="flex: 1;">
+                                <label>Text Color</label>
+                                <input type="color" id="text-color" value="#ffffff" onchange="render()">
+                            </div>
+                            <button class="action-btn" style="padding: 8px 12px; font-size: 11px;" onclick="toggleAutoContrast()">Auto</button>
+                        </div>
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label>Text Size</label>
+                            <span class="slider-value" id="text-size-value">100%</span>
+                        </div>
+                        <input type="range" id="text-size" min="50" max="150" value="100" oninput="updateSlider('text-size')">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label>Letter Spacing</label>
+                            <span class="slider-value" id="letter-spacing-value">0</span>
+                        </div>
+                        <input type="range" id="letter-spacing" min="-50" max="100" value="0" oninput="updateSlider('letter-spacing')">
+                    </div>
+
+                    <!-- Text Style Effects -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="section-title" style="margin-bottom: 10px;">Text Style</div>
+                        <div class="text-styles">
+                            <button class="text-style-btn active" data-style="normal" onclick="setTextStyle('normal', this)">
+                                <div class="preview-text">Aa</div>
+                                Normal
+                            </button>
+                            <button class="text-style-btn neon" data-style="neon" onclick="setTextStyle('neon', this)">
+                                <div class="preview-text">Aa</div>
+                                Neon
+                            </button>
+                            <button class="text-style-btn sticker" data-style="sticker" onclick="setTextStyle('sticker', this)">
+                                <div class="preview-text">Aa</div>
+                                Sticker
+                            </button>
+                            <button class="text-style-btn" data-style="wave" onclick="setTextStyle('wave', this)">
+                                <div class="preview-text">〰️</div>
+                                Wave
+                            </button>
+                            <button class="text-style-btn" data-style="glitch" onclick="setTextStyle('glitch', this)">
+                                <div class="preview-text" style="color: #f00;">Aa</div>
+                                Glitch
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Text Stroke -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="toggle-group">
+                            <span class="toggle-label">Text Stroke/Outline</span>
+                            <div class="toggle" id="text-stroke" onclick="toggleOption('text-stroke')"></div>
+                        </div>
+                        <div id="text-stroke-controls" style="display: none;">
+                            <div class="color-row" style="margin-top: 8px;">
+                                <div class="color-picker-wrapper">
+                                    <label>Stroke Color</label>
+                                    <input type="color" id="text-stroke-color" value="#000000" onchange="state.textStrokeColor = this.value; render()">
+                                </div>
+                                <div class="input-group">
+                                    <label>Stroke Width</label>
+                                    <input type="range" id="text-stroke-width" min="1" max="10" value="2" oninput="state.textStrokeWidth = this.value; render()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Shadow -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="toggle-group">
+                            <span class="toggle-label">Custom Text Shadow</span>
+                            <div class="toggle active" id="text-shadow-enabled" onclick="toggleOption('text-shadow-enabled')"></div>
+                        </div>
+                        <div id="text-shadow-controls">
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Shadow Blur</label>
+                                    <span class="slider-value" id="text-shadow-blur-value">20px</span>
+                                </div>
+                                <input type="range" id="text-shadow-blur" min="0" max="50" value="20" oninput="updateSlider('text-shadow-blur')">
+                            </div>
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Shadow Offset X</label>
+                                    <span class="slider-value" id="text-shadow-offset-x-value">0px</span>
+                                </div>
+                                <input type="range" id="text-shadow-offset-x" min="-30" max="30" value="0" oninput="updateSlider('text-shadow-offset-x')">
+                            </div>
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Shadow Offset Y</label>
+                                    <span class="slider-value" id="text-shadow-offset-y-value">4px</span>
+                                </div>
+                                <input type="range" id="text-shadow-offset-y" min="-30" max="30" value="4" oninput="updateSlider('text-shadow-offset-y')">
+                            </div>
+                            <div class="color-picker-wrapper" style="margin-top: 8px;">
+                                <label>Shadow Color</label>
+                                <input type="color" id="text-shadow-color" value="#000000" onchange="state.textShadowColor = this.value; render()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Background/Pill -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="toggle-group">
+                            <span class="toggle-label">Text Background (Pill)</span>
+                            <div class="toggle" id="text-background" onclick="toggleOption('text-background')"></div>
+                        </div>
+                        <div id="text-bg-controls" style="display: none;">
+                            <div class="color-picker-wrapper" style="margin-top: 8px;">
+                                <label>Background Color</label>
+                                <input type="color" id="text-bg-color" value="#000000" onchange="state.textBgColor = this.value; render()">
+                            </div>
+                            <div class="slider-group" style="margin-top: 8px;">
+                                <div class="slider-header">
+                                    <label>Opacity</label>
+                                    <span class="slider-value" id="text-bg-opacity-value">50%</span>
+                                </div>
+                                <input type="range" id="text-bg-opacity" min="10" max="100" value="50" oninput="updateSlider('text-bg-opacity')">
+                            </div>
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Padding</label>
+                                    <span class="slider-value" id="text-bg-padding-value">20px</span>
+                                </div>
+                                <input type="range" id="text-bg-padding" min="5" max="60" value="20" oninput="updateSlider('text-bg-padding')">
+                            </div>
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Radius</label>
+                                    <span class="slider-value" id="text-bg-radius-value">10px</span>
+                                </div>
+                                <input type="range" id="text-bg-radius" min="0" max="40" value="10" oninput="updateSlider('text-bg-radius')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Background -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Background</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <!-- Background Type Tabs -->
+                    <div class="bg-type-tabs">
+                        <button class="bg-type-tab active" data-type="gradient" onclick="setBackgroundType('gradient')">Gradient</button>
+                        <button class="bg-type-tab" data-type="mesh" onclick="setBackgroundType('mesh')">Mesh</button>
+                        <button class="bg-type-tab" data-type="image" onclick="setBackgroundType('image')">Image</button>
+                        <button class="bg-type-tab" data-type="pattern" onclick="setBackgroundType('pattern')">Pattern</button>
+                    </div>
+
+                    <!-- Gradient Controls -->
+                    <div id="bg-gradient-controls">
+                        <div class="color-row">
+                            <div class="color-picker-wrapper">
+                                <label>Color 1</label>
+                                <input type="color" id="color1" value="#667eea" onchange="render()">
+                            </div>
+                            <div class="color-picker-wrapper">
+                                <label>Color 2</label>
+                                <input type="color" id="color2" value="#764ba2" onchange="render()">
+                            </div>
+                        </div>
+                        <div class="gradient-presets">
+                            <div class="gradient-preset active" style="background: linear-gradient(135deg, #667eea, #764ba2)" onclick="setGradient('#667eea', '#764ba2', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb, #f5576c)" onclick="setGradient('#f093fb', '#f5576c', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #4facfe, #00f2fe)" onclick="setGradient('#4facfe', '#00f2fe', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #43e97b, #38f9d7)" onclick="setGradient('#43e97b', '#38f9d7', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #fa709a, #fee140)" onclick="setGradient('#fa709a', '#fee140', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #a18cd1, #fbc2eb)" onclick="setGradient('#a18cd1', '#fbc2eb', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #ff9a9e, #fecfef)" onclick="setGradient('#ff9a9e', '#fecfef', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #2c3e50, #4ca1af)" onclick="setGradient('#2c3e50', '#4ca1af', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #0f0c29, #302b63)" onclick="setGradient('#0f0c29', '#302b63', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #000000, #434343)" onclick="setGradient('#000000', '#434343', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #ece9e6, #ffffff)" onclick="setGradient('#ece9e6', '#ffffff', this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #f5f7fa, #c3cfe2)" onclick="setGradient('#f5f7fa', '#c3cfe2', this)"></div>
+                        </div>
+                        <div class="slider-group" style="margin-top: 12px;">
+                            <div class="slider-header">
+                                <label>Gradient Angle</label>
+                                <span class="slider-value" id="gradient-angle-value">135°</span>
+                            </div>
+                            <input type="range" id="gradient-angle" min="0" max="360" value="135" oninput="updateSlider('gradient-angle')">
+                        </div>
+                    </div>
+
+                    <!-- Mesh Gradient Controls -->
+                    <div id="bg-mesh-controls" style="display: none;">
+                        <div class="input-group">
+                            <label>Mesh Colors (4-point gradient)</label>
+                            <div class="mesh-colors">
+                                <input type="color" class="mesh-color-input" id="mesh-color-1" value="#667eea" onchange="updateMeshColors()">
+                                <input type="color" class="mesh-color-input" id="mesh-color-2" value="#764ba2" onchange="updateMeshColors()">
+                                <input type="color" class="mesh-color-input" id="mesh-color-3" value="#f093fb" onchange="updateMeshColors()">
+                                <input type="color" class="mesh-color-input" id="mesh-color-4" value="#43e97b" onchange="updateMeshColors()">
+                            </div>
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Complexity</label>
+                                <span class="slider-value" id="mesh-complexity-value">4</span>
+                            </div>
+                            <input type="range" id="mesh-complexity" min="2" max="8" value="4" oninput="updateSlider('mesh-complexity')">
+                        </div>
+                    </div>
+
+                    <!-- Image Background Controls -->
+                    <div id="bg-image-controls" style="display: none;">
+                        <div class="upload-area" id="bg-image-upload" onclick="document.getElementById('bg-image-input').click()">
+                            <div class="upload-icon">🖼️</div>
+                            <div class="upload-text">
+                                <strong>Upload Background Image</strong><br>
+                                JPG, PNG supported
+                            </div>
+                        </div>
+                        <input type="file" id="bg-image-input" accept="image/*" style="display:none" onchange="handleBgImageUpload(event)">
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label>Image Fit</label>
+                            <select id="bg-image-fit" onchange="state.backgroundImageFit = this.value; render()">
+                                <option value="cover">Cover (fill, may crop)</option>
+                                <option value="contain">Contain (fit, may letterbox)</option>
+                                <option value="fill">Stretch to fill</option>
+                                <option value="tile">Tile/Repeat</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Pattern Controls -->
+                    <div id="bg-pattern-controls" style="display: none;">
+                        <div class="color-row" style="margin-bottom: 12px;">
+                            <div class="color-picker-wrapper">
+                                <label>Base Color</label>
+                                <input type="color" id="pattern-base-color" value="#667eea" onchange="render()">
+                            </div>
+                            <div class="color-picker-wrapper">
+                                <label>Pattern Color</label>
+                                <input type="color" id="pattern-color" value="#ffffff" onchange="state.patternColor = this.value; render()">
+                            </div>
+                        </div>
+                        <div class="pattern-grid">
+                            <button class="pattern-btn" data-pattern="dots" onclick="setPattern('dots', this)">●●●</button>
+                            <button class="pattern-btn" data-pattern="lines" onclick="setPattern('lines', this)">///</button>
+                            <button class="pattern-btn" data-pattern="waves" onclick="setPattern('waves', this)">〰️</button>
+                            <button class="pattern-btn" data-pattern="grid" onclick="setPattern('grid', this)">#</button>
+                            <button class="pattern-btn" data-pattern="noise" onclick="setPattern('noise', this)">▓</button>
+                            <button class="pattern-btn" data-pattern="chevron" onclick="setPattern('chevron', this)">⟩⟩</button>
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Pattern Opacity</label>
+                                <span class="slider-value" id="pattern-opacity-value">20%</span>
+                            </div>
+                            <input type="range" id="pattern-opacity" min="5" max="100" value="20" oninput="updateSlider('pattern-opacity')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Pattern Scale</label>
+                                <span class="slider-value" id="pattern-scale-value">100%</span>
+                            </div>
+                            <input type="range" id="pattern-scale" min="25" max="300" value="100" oninput="updateSlider('pattern-scale')">
+                        </div>
+                    </div>
+
+                    <!-- Background Effects -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Background Blur</label>
+                                <span class="slider-value" id="bg-blur-value">0px</span>
+                            </div>
+                            <input type="range" id="bg-blur" min="0" max="50" value="0" oninput="updateSlider('bg-blur')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Vignette</label>
+                                <span class="slider-value" id="vignette-value">0%</span>
+                            </div>
+                            <input type="range" id="vignette" min="0" max="100" value="0" oninput="updateSlider('vignette')">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device & Layout -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Device & Layout</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="toggle-group">
+                        <span class="toggle-label">Show Device Frame</span>
+                        <div class="toggle active" id="show-frame" onclick="toggleOption('show-frame')"></div>
+                    </div>
+
+                    <!-- Frame Style -->
+                    <div class="input-group" style="margin-top: 10px;">
+                        <label>Frame Style</label>
+                        <div class="frame-styles">
+                            <button class="frame-style-btn active" data-style="realistic" onclick="setFrameStyle('realistic', this)">
+                                <div class="preview" style="background: #1a1a1a;"></div>
+                                Realistic
+                            </button>
+                            <button class="frame-style-btn" data-style="clay-white" onclick="setFrameStyle('clay-white', this)">
+                                <div class="preview" style="background: #f0f0f0;"></div>
+                                White
+                            </button>
+                            <button class="frame-style-btn" data-style="clay-black" onclick="setFrameStyle('clay-black', this)">
+                                <div class="preview" style="background: #2a2a2a;"></div>
+                                Black
+                            </button>
+                            <button class="frame-style-btn" data-style="clay-gold" onclick="setFrameStyle('clay-gold', this)">
+                                <div class="preview" style="background: linear-gradient(135deg, #d4af37, #f4d03f);"></div>
+                                Gold
+                            </button>
+                            <button class="frame-style-btn" data-style="clay-silver" onclick="setFrameStyle('clay-silver', this)">
+                                <div class="preview" style="background: linear-gradient(135deg, #c0c0c0, #e8e8e8);"></div>
+                                Silver
+                            </button>
+                            <button class="frame-style-btn" data-style="clay-custom" onclick="setFrameStyle('clay-custom', this)">
+                                <div class="preview" style="background: var(--accent);"></div>
+                                Custom
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group" id="frame-custom-color-group" style="display: none;">
+                        <label>Custom Frame Color</label>
+                        <input type="color" id="frame-custom-color" value="#888888" onchange="state.frameCustomColor = this.value; render()">
+                    </div>
+
+                    <div class="toggle-group">
+                        <span class="toggle-label">Text at Top</span>
+                        <div class="toggle active" id="text-top" onclick="toggleOption('text-top')"></div>
+                    </div>
+                    <div class="toggle-group">
+                        <span class="toggle-label">Drop Shadow</span>
+                        <div class="toggle active" id="drop-shadow" onclick="toggleOption('drop-shadow')"></div>
+                    </div>
+                    <div class="toggle-group">
+                        <span class="toggle-label">Reflection Effect</span>
+                        <div class="toggle" id="reflection" onclick="toggleOption('reflection')"></div>
+                    </div>
+
+                    <!-- Device Rotation -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="section-title" style="margin-bottom: 10px;">3D Rotation</div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Rotate X (Tilt)</label>
+                                <span class="slider-value" id="rotate-x-value">0°</span>
+                            </div>
+                            <input type="range" id="rotate-x" min="-30" max="30" value="0" oninput="updateSlider('rotate-x')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Rotate Y (Turn)</label>
+                                <span class="slider-value" id="rotate-y-value">0°</span>
+                            </div>
+                            <input type="range" id="rotate-y" min="-30" max="30" value="0" oninput="updateSlider('rotate-y')">
+                        </div>
+                    </div>
+
+                    <!-- Shadow Direction -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="section-title" style="margin-bottom: 10px;">Shadow</div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Shadow Direction</label>
+                                <span class="slider-value" id="shadow-direction-value">135°</span>
+                            </div>
+                            <input type="range" id="shadow-direction" min="0" max="360" value="135" oninput="updateSlider('shadow-direction')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Shadow Distance</label>
+                                <span class="slider-value" id="shadow-distance-value">20px</span>
+                            </div>
+                            <input type="range" id="shadow-distance" min="0" max="60" value="20" oninput="updateSlider('shadow-distance')">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Device Scale</label>
+                                <span class="slider-value" id="device-scale-value">75%</span>
+                            </div>
+                            <input type="range" id="device-scale" min="40" max="95" value="75" oninput="updateSlider('device-scale')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Vertical Position</label>
+                                <span class="slider-value" id="device-y-value">50%</span>
+                            </div>
+                            <input type="range" id="device-y" min="0" max="100" value="50" oninput="updateSlider('device-y')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Corner Radius</label>
+                                <span class="slider-value" id="corner-radius-value">45px</span>
+                            </div>
+                            <input type="range" id="corner-radius" min="0" max="80" value="45" oninput="updateSlider('corner-radius')">
+                        </div>
+                    </div>
+
+                    <!-- Screenshot Pan/Zoom -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="section-title" style="margin-bottom: 10px;">Screenshot Position</div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Zoom</label>
+                                <span class="slider-value" id="screenshot-zoom-value">100%</span>
+                            </div>
+                            <input type="range" id="screenshot-zoom" min="50" max="200" value="100" oninput="updateSlider('screenshot-zoom')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Offset X</label>
+                                <span class="slider-value" id="screenshot-offset-x-value">0px</span>
+                            </div>
+                            <input type="range" id="screenshot-offset-x" min="-200" max="200" value="0" oninput="updateSlider('screenshot-offset-x')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Offset Y</label>
+                                <span class="slider-value" id="screenshot-offset-y-value">0px</span>
+                            </div>
+                            <input type="range" id="screenshot-offset-y" min="-200" max="200" value="0" oninput="updateSlider('screenshot-offset-y')">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Screenshot Padding</label>
+                                <span class="slider-value" id="screenshot-padding-value">0px</span>
+                            </div>
+                            <input type="range" id="screenshot-padding" min="0" max="50" value="0" oninput="updateSlider('screenshot-padding')">
+                        </div>
+                    </div>
+
+                    <!-- Multi-Device -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="toggle-group">
+                            <span class="toggle-label">Multiple Devices</span>
+                            <div class="toggle" id="multi-device" onclick="toggleOption('multi-device')"></div>
+                        </div>
+                        <div class="multi-device-config" id="multi-device-config" style="display: none;">
+                            <div class="input-group">
+                                <label>Second Device</label>
+                                <select id="second-device-select" onchange="state.secondDevice = this.value; render()">
+                                    <option value="iphone">iPhone 6.5"</option>
+                                    <option value="iphone-5.5">iPhone 5.5"</option>
+                                    <option value="ipad">iPad 13"</option>
+                                </select>
+                            </div>
+                            <div class="upload-area" style="margin-top: 8px; padding: 10px;" onclick="document.getElementById('second-screenshot-input').click()">
+                                <div class="upload-text" style="font-size: 11px;">Upload second screenshot</div>
+                            </div>
+                            <input type="file" id="second-screenshot-input" accept="image/*" style="display:none" onchange="handleSecondScreenshotUpload(event)">
+                            <div class="slider-group" style="margin-top: 10px;">
+                                <div class="slider-header">
+                                    <label>Device Spacing</label>
+                                    <span class="slider-value" id="device-spacing-value">50px</span>
+                                </div>
+                                <input type="range" id="device-spacing" min="0" max="150" value="50" oninput="updateSlider('device-spacing')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badge -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Badge / Label</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="input-group">
+                        <label>Badge Text</label>
+                        <input type="text" id="badge-text" placeholder="NEW, #1, etc." oninput="render()">
+                    </div>
+                    <div class="badge-row">
+                        <div class="badge-option active" data-pos="top-left" onclick="setBadgePosition('top-left', this)">↖ Top Left</div>
+                        <div class="badge-option" data-pos="top-right" onclick="setBadgePosition('top-right', this)">↗ Top Right</div>
+                        <div class="badge-option" data-pos="bottom-left" onclick="setBadgePosition('bottom-left', this)">↙ Bottom Left</div>
+                        <div class="badge-option" data-pos="bottom-right" onclick="setBadgePosition('bottom-right', this)">↘ Bottom Right</div>
+                    </div>
+                    <div class="color-row" style="margin-top: 10px;">
+                        <div class="color-picker-wrapper">
+                            <label>Badge Color</label>
+                            <input type="color" id="badge-color" value="#ff3b30" onchange="render()">
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <label>Badge Text</label>
+                            <input type="color" id="badge-text-color" value="#ffffff" onchange="render()">
+                        </div>
+                    </div>
+
+                    <!-- Star Rating -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="input-group">
+                            <label>Star Rating (e.g., "4.9")</label>
+                            <div class="star-rating-input">
+                                <input type="text" id="star-rating" placeholder="4.9" maxlength="3" oninput="render()">
+                                <span class="star-preview" id="star-preview">★★★★★</span>
+                            </div>
+                        </div>
+                        <div class="badge-row" style="margin-top: 8px;">
+                            <div class="badge-option" data-pos="top" onclick="setStarPosition('top', this)">↑ Top</div>
+                            <div class="badge-option active" data-pos="bottom" onclick="setStarPosition('bottom', this)">↓ Bottom</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo/Icon Overlay -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Logo / Icon Overlay</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content collapsed">
+                    <div class="logo-upload-area" id="logo-upload" onclick="document.getElementById('logo-input').click()">
+                        <div class="upload-icon">🏷️</div>
+                        <div class="upload-text" id="logo-upload-text">
+                            <strong>Upload Logo/Icon</strong><br>
+                            PNG with transparency works best
+                        </div>
+                    </div>
+                    <input type="file" id="logo-input" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+                    <button class="action-btn" style="width: 100%; margin-bottom: 12px;" onclick="removeLogo()" id="remove-logo-btn" disabled>Remove Logo</button>
+
+                    <div class="input-group">
+                        <label>Position</label>
+                        <div class="position-grid">
+                            <button class="position-btn" data-pos="top-left" onclick="setLogoPosition('top-left', this)">↖</button>
+                            <button class="position-btn" data-pos="top-center" onclick="setLogoPosition('top-center', this)">↑</button>
+                            <button class="position-btn active" data-pos="top-right" onclick="setLogoPosition('top-right', this)">↗</button>
+                            <button class="position-btn" data-pos="center-left" onclick="setLogoPosition('center-left', this)">←</button>
+                            <button class="position-btn" data-pos="center" onclick="setLogoPosition('center', this)">●</button>
+                            <button class="position-btn" data-pos="center-right" onclick="setLogoPosition('center-right', this)">→</button>
+                            <button class="position-btn" data-pos="bottom-left" onclick="setLogoPosition('bottom-left', this)">↙</button>
+                            <button class="position-btn" data-pos="bottom-center" onclick="setLogoPosition('bottom-center', this)">↓</button>
+                            <button class="position-btn" data-pos="bottom-right" onclick="setLogoPosition('bottom-right', this)">↘</button>
+                        </div>
+                    </div>
+                    <div class="slider-group" style="margin-top: 12px;">
+                        <div class="slider-header">
+                            <label>Logo Size</label>
+                            <span class="slider-value" id="logo-scale-value">30%</span>
+                        </div>
+                        <input type="range" id="logo-scale" min="10" max="80" value="30" oninput="updateSlider('logo-scale')">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label>Offset X</label>
+                            <span class="slider-value" id="logo-offset-x-value">0px</span>
+                        </div>
+                        <input type="range" id="logo-offset-x" min="-100" max="100" value="0" oninput="updateSlider('logo-offset-x')">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <label>Offset Y</label>
+                            <span class="slider-value" id="logo-offset-y-value">0px</span>
+                        </div>
+                        <input type="range" id="logo-offset-y" min="-100" max="100" value="0" oninput="updateSlider('logo-offset-y')">
+                    </div>
+                    <div class="toggle-group">
+                        <span class="toggle-label">Logo Shadow</span>
+                        <div class="toggle active" id="logo-shadow" onclick="toggleOption('logo-shadow')"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Callout Arrows -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Callout Arrows</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content collapsed">
+                    <button class="arrow-tool-btn" id="arrow-tool" onclick="toggleArrowTool()">
+                        <span>➡️</span>
+                        Draw Arrow (Click & Drag on Preview)
+                    </button>
+                    <div class="color-picker-wrapper" style="margin-top: 12px;">
+                        <label>Arrow Color</label>
+                        <input type="color" id="arrow-color" value="#ff3b30" onchange="render()">
+                    </div>
+                    <div class="slider-group" style="margin-top: 8px;">
+                        <div class="slider-header">
+                            <label>Arrow Size</label>
+                            <span class="slider-value" id="arrow-size-value">4</span>
+                        </div>
+                        <input type="range" id="arrow-size" min="2" max="12" value="4" oninput="updateSlider('arrow-size')">
+                    </div>
+                    <button class="action-btn" style="width: 100%; margin-top: 12px;" onclick="clearArrows()">Clear All Arrows</button>
+                </div>
+            </div>
+
+            <!-- QR Code -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">QR Code</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content collapsed">
+                    <div class="input-group">
+                        <label>URL / Text for QR</label>
+                        <input type="text" id="qr-text" placeholder="https://apps.apple.com/..." oninput="generateQR()">
+                    </div>
+                    <div class="badge-row" style="margin-top: 8px;">
+                        <div class="badge-option" data-pos="bottom-left" onclick="setQRPosition('bottom-left', this)">↙ Left</div>
+                        <div class="badge-option active" data-pos="bottom-right" onclick="setQRPosition('bottom-right', this)">↘ Right</div>
+                    </div>
+                    <div class="slider-group" style="margin-top: 12px;">
+                        <div class="slider-header">
+                            <label>QR Size</label>
+                            <span class="slider-value" id="qr-size-value">15%</span>
+                        </div>
+                        <input type="range" id="qr-size" min="8" max="30" value="15" oninput="updateSlider('qr-size')">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Watermark -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Watermark</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content collapsed">
+                    <div class="input-group">
+                        <label>Watermark Text</label>
+                        <input type="text" id="watermark-text" placeholder="© Your Brand" oninput="state.watermark = this.value; render()">
+                    </div>
+                    <div class="badge-row" style="margin-top: 8px;">
+                        <div class="badge-option" data-pos="bottom-left" onclick="setWatermarkPosition('bottom-left', this)">↙ Left</div>
+                        <div class="badge-option" data-pos="bottom-center" onclick="setWatermarkPosition('bottom-center', this)">↓ Center</div>
+                        <div class="badge-option active" data-pos="bottom-right" onclick="setWatermarkPosition('bottom-right', this)">↘ Right</div>
+                    </div>
+                    <div class="slider-group" style="margin-top: 12px;">
+                        <div class="slider-header">
+                            <label>Opacity</label>
+                            <span class="slider-value" id="watermark-opacity-value">50%</span>
+                        </div>
+                        <input type="range" id="watermark-opacity" min="10" max="100" value="50" oninput="updateSlider('watermark-opacity')">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Templates -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Template Presets</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content collapsed">
+                    <div class="template-grid">
+                        <button class="template-btn" onclick="applyTemplate('minimal')">
+                            <div class="template-preview" style="background: linear-gradient(135deg, #000, #333);"></div>
+                            <div class="template-name">Minimal Dark</div>
+                        </button>
+                        <button class="template-btn" onclick="applyTemplate('vibrant')">
+                            <div class="template-preview" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+                            <div class="template-name">Vibrant</div>
+                        </button>
+                        <button class="template-btn" onclick="applyTemplate('clean')">
+                            <div class="template-preview" style="background: linear-gradient(135deg, #f5f7fa, #c3cfe2);"></div>
+                            <div class="template-name">Clean Light</div>
+                        </button>
+                        <button class="template-btn" onclick="applyTemplate('neon')">
+                            <div class="template-preview" style="background: linear-gradient(135deg, #0f0c29, #302b63);"></div>
+                            <div class="template-name">Neon</div>
+                        </button>
+                        <button class="template-btn" onclick="applyTemplate('nature')">
+                            <div class="template-preview" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
+                            <div class="template-name">Nature</div>
+                        </button>
+                        <button class="template-btn" onclick="applyTemplate('sunset')">
+                            <div class="template-preview" style="background: linear-gradient(135deg, #fa709a, #fee140);"></div>
+                            <div class="template-name">Sunset</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Save/Load -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Project</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content collapsed">
+                    <div class="action-row">
+                        <button class="action-btn" onclick="undo()" id="undo-btn" disabled>
+                            <span>↩️</span> Undo <span class="shortcut-hint">⌘Z</span>
+                        </button>
+                        <button class="action-btn" onclick="redo()" id="redo-btn" disabled>
+                            <span>↪️</span> Redo <span class="shortcut-hint">⌘Y</span>
+                        </button>
+                    </div>
+                    <div class="project-actions">
+                        <button class="action-btn" onclick="saveProject()">
+                            <span>💾</span> Save Project
+                        </button>
+                        <button class="action-btn" onclick="document.getElementById('load-project-input').click()">
+                            <span>📂</span> Load Project
+                        </button>
+                    </div>
+                    <input type="file" id="load-project-input" accept=".json" style="display:none" onchange="loadProject(event)">
+
+                    <!-- Custom Font Upload -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <div class="input-group">
+                            <label>Custom Font (.ttf, .woff, .woff2)</label>
+                            <button class="action-btn" style="width: 100%;" onclick="document.getElementById('font-upload-input').click()">
+                                <span>🔤</span> Upload Custom Font
+                            </button>
+                        </div>
+                        <input type="file" id="font-upload-input" accept=".ttf,.woff,.woff2,.otf" style="display:none" onchange="handleFontUpload(event)">
+                        <div id="custom-fonts-list" style="margin-top: 8px; font-size: 11px; color: var(--text-secondary);"></div>
+                    </div>
+
+                    <!-- Color Picker from Screenshot -->
+                    <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <button class="action-btn" style="width: 100%;" onclick="activateEyedropper()">
+                            <span>🎨</span> Pick Color from Screenshot
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-title">Export Options</div>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <!-- Multi-size Export -->
+                    <div class="input-group">
+                        <label>Export All Sizes (Select Multiple)</label>
+                        <div class="export-size-grid">
+                            <button class="export-size-btn selected" data-size="current" onclick="toggleExportSize('current', this)">Current Only</button>
+                            <button class="export-size-btn" data-size="iphone-6.9" onclick="toggleExportSize('iphone-6.9', this)">iPhone 6.9"</button>
+                            <button class="export-size-btn" data-size="iphone" onclick="toggleExportSize('iphone', this)">iPhone 6.5"</button>
+                            <button class="export-size-btn" data-size="iphone-5.5" onclick="toggleExportSize('iphone-5.5', this)">iPhone 5.5"</button>
+                            <button class="export-size-btn" data-size="ipad" onclick="toggleExportSize('ipad', this)">iPad 13"</button>
+                            <button class="export-size-btn" data-size="ipad-12.9" onclick="toggleExportSize('ipad-12.9', this)">iPad 12.9"</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="export-btn" onclick="exportImage()">
+                    <span>⬇️</span>
+                    <span id="export-btn-text">Export PNG</span>
+                </button>
+                <button class="export-btn secondary" onclick="exportAsJPG()">
+                    <span>🖼️</span>
+                    Export JPG (Smaller)
+                </button>
+                <button class="export-btn secondary" onclick="exportAsZIP()" id="zip-export-btn" style="display: none;">
+                    <span>📦</span>
+                    Export as ZIP
+                </button>
+            </div>
+        </aside>
+
+        <main class="canvas-area">
+            <div class="preview-container">
+                <canvas id="preview-canvas"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <canvas id="export-canvas"></canvas>
+
+    <script>
+        // State
+        let state = {
+            mode: 'single',
+            device: 'iphone',
+            screenshot: null,
+            batchImages: [],
+            batchIndex: 0,
+            headline: '',
+            subheadline: '',
+            headlineFont: 'Inter',
+            bodyFont: 'Inter',
+            headlineWeight: '700',
+            textColor: '#ffffff',
+            color1: '#667eea',
+            color2: '#764ba2',
+            gradientAngle: 135,
+            textSize: 100,
+            letterSpacing: 0,
+            showFrame: true,
+            textAtTop: true,
+            dropShadow: true,
+            reflection: false,
+            deviceScale: 75,
+            deviceY: 50,
+            cornerRadius: 45,
+            badgeText: '',
+            badgePosition: 'top-left',
+            badgeColor: '#ff3b30',
+            badgeTextColor: '#ffffff',
+            // New features
+            deviceRotateX: 0,
+            deviceRotateY: 0,
+            frameStyle: 'realistic', // realistic, clay-white, clay-black, clay-gold, clay-custom
+            frameCustomColor: '#888888',
+            backgroundType: 'gradient', // gradient, image, solid, mesh, pattern
+            backgroundImage: null,
+            backgroundImageFit: 'cover', // cover, contain, fill, tile
+            backgroundPattern: 'none', // none, dots, lines, waves, grid, noise
+            patternColor: '#ffffff',
+            patternOpacity: 20,
+            patternScale: 100,
+            meshColors: ['#667eea', '#764ba2', '#f093fb', '#43e97b'],
+            meshComplexity: 4,
+            logoImage: null,
+            logoPosition: 'top-right',
+            logoScale: 30,
+            logoShadow: true,
+            logoOffsetX: 0,
+            logoOffsetY: 0,
+            arrows: [],
+            textBackground: false,
+            textBgColor: '#000000',
+            textBgOpacity: 50,
+            textBgPadding: 20,
+            textBgRadius: 10,
+            textStroke: false,
+            textStrokeColor: '#000000',
+            textStrokeWidth: 2,
+            textShadowEnabled: true,
+            textShadowBlur: 20,
+            textShadowOffsetX: 0,
+            textShadowOffsetY: 4,
+            textShadowColor: '#000000',
+            textStyle: 'normal', // normal, wave, neon, sticker, glitch
+            shadowDirection: 135,
+            shadowDistance: 20,
+            landscapeMode: false,
+            screenshotOffsetX: 0,
+            screenshotOffsetY: 0,
+            screenshotZoom: 100,
+            multiDevice: false,
+            secondDevice: 'iphone',
+            secondScreenshot: null,
+            deviceSpacing: 50,
+            starRating: '',
+            starRatingPosition: 'bottom',
+            backgroundBlur: 0,
+            vignette: 0,
+            watermark: '',
+            watermarkPosition: 'bottom-right',
+            watermarkOpacity: 50,
+            screenshotPadding: 0,
+            customFonts: [],
+            undoStack: [],
+            redoStack: [],
+            qrText: '',
+            qrPosition: 'bottom-right',
+            qrSize: 15,
+            qrImage: null,
+            autoContrast: false
+        };
+
+        // History for undo/redo
+        let historyStack = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 50;
+
+        // Device dimensions (App Store requirements)
+        const devices = {
+            // iOS Devices
+            'iphone-6.9': { width: 1320, height: 2868, name: 'iPhone 6.9"', screenRatio: 2868/1320, category: 'ios' },
+            'iphone-6.7': { width: 1290, height: 2796, name: 'iPhone 6.7"', screenRatio: 2796/1290, category: 'ios' },
+            iphone: { width: 1242, height: 2688, name: 'iPhone 6.5"', screenRatio: 2688/1242, category: 'ios' },
+            'iphone-5.5': { width: 1242, height: 2208, name: 'iPhone 5.5"', screenRatio: 2208/1242, category: 'ios' },
+            ipad: { width: 2064, height: 2752, name: 'iPad 13"', screenRatio: 2752/2064, category: 'ios' },
+            'ipad-12.9': { width: 2048, height: 2732, name: 'iPad 12.9"', screenRatio: 2732/2048, category: 'ios' },
+            'ipad-11': { width: 1668, height: 2388, name: 'iPad 11"', screenRatio: 2388/1668, category: 'ios' },
+            // Android Devices
+            'pixel': { width: 1080, height: 2400, name: 'Pixel', screenRatio: 2400/1080, category: 'android', cornerRadius: 40 },
+            'samsung-s': { width: 1440, height: 3200, name: 'Samsung Galaxy S', screenRatio: 3200/1440, category: 'android', cornerRadius: 35 },
+            'android-phone': { width: 1080, height: 1920, name: 'Android Phone', screenRatio: 1920/1080, category: 'android' },
+            'android-tablet': { width: 1600, height: 2560, name: 'Android Tablet', screenRatio: 2560/1600, category: 'android' },
+            // Google Play Store dimensions
+            'google-play': { width: 1080, height: 1920, name: 'Google Play', screenRatio: 1920/1080, category: 'android' },
+            'google-play-7': { width: 1080, height: 2340, name: 'Google Play 7"', screenRatio: 2340/1080, category: 'android' },
+            'google-play-10': { width: 1920, height: 1200, name: 'Google Play 10"', screenRatio: 1200/1920, category: 'android' },
+            // Mac/Desktop
+            'macbook-pro': { width: 2880, height: 1800, name: 'MacBook Pro 16"', screenRatio: 1800/2880, category: 'mac' },
+            'macbook-air': { width: 2560, height: 1664, name: 'MacBook Air 15"', screenRatio: 1664/2560, category: 'mac' },
+            'imac': { width: 5120, height: 2880, name: 'iMac 27"', screenRatio: 2880/5120, category: 'mac' },
+            // Apple Watch
+            'watch-ultra': { width: 410, height: 502, name: 'Watch Ultra', screenRatio: 502/410, category: 'watch' },
+            'watch-45': { width: 396, height: 484, name: 'Watch 45mm', screenRatio: 484/396, category: 'watch' },
+            'watch-41': { width: 352, height: 430, name: 'Watch 41mm', screenRatio: 430/352, category: 'watch' }
+        };
+
+        // Device categories for UI grouping
+        const deviceCategories = {
+            ios: { name: 'iOS', icon: '📱' },
+            android: { name: 'Android', icon: '🤖' },
+            mac: { name: 'Mac', icon: '💻' },
+            watch: { name: 'Watch', icon: '⌚' }
+        };
+
+        // Canvas refs
+        const previewCanvas = document.getElementById('preview-canvas');
+        const exportCanvas = document.getElementById('export-canvas');
+        const previewCtx = previewCanvas.getContext('2d');
+        const exportCtx = exportCanvas.getContext('2d');
+
+        // Loaded fonts tracking
+        let fontsLoaded = false;
+
+        // Wait for fonts
+        document.fonts.ready.then(() => {
+            fontsLoaded = true;
+            render();
+        });
+
+        // Initialize
+        function init() {
+            render();
+            setupDragDrop();
+        }
+
+        function setupDragDrop() {
+            ['single-upload', 'batch-upload'].forEach(id => {
+                const area = document.getElementById(id);
+                if (!area) return;
+                
+                area.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    area.style.borderColor = 'var(--accent)';
+                });
+                area.addEventListener('dragleave', () => {
+                    area.style.borderColor = '';
+                });
+                area.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    area.style.borderColor = '';
+                    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+                    if (state.mode === 'batch') {
+                        loadBatchImages(files);
+                    } else if (files[0]) {
+                        loadImage(files[0]);
+                    }
+                });
+            });
+        }
+
+        function setMode(mode) {
+            state.mode = mode;
+            document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.textContent.toLowerCase().includes(mode)));
+            document.querySelectorAll('.single-panel').forEach(p => p.classList.toggle('batch-panel', mode === 'batch'));
+            document.querySelectorAll('.batch-panel').forEach(p => p.classList.toggle('active', mode === 'batch'));
+            
+            document.getElementById('export-btn-text').textContent = mode === 'batch' ? `Export All (${state.batchImages.length})` : 'Export PNG';
+            
+            if (mode === 'single' && state.batchImages.length > 0) {
+                state.screenshot = state.batchImages[0].img;
+            }
+            render();
+        }
+
+        function selectDevice(device) {
+            state.device = device;
+            document.querySelectorAll('.device-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.device === device);
+            });
+            render();
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) loadImage(file);
+        }
+
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    state.screenshot = img;
+                    document.getElementById('single-upload').classList.add('has-image');
+                    render();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleBatchUpload(event) {
+            const files = Array.from(event.target.files);
+            loadBatchImages(files);
+        }
+
+        function loadBatchImages(files) {
+            const imageFiles = files.filter(f => f.type.startsWith('image/'));
+            let loaded = 0;
+            
+            imageFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        state.batchImages.push({ img, name: file.name });
+                        loaded++;
+                        if (loaded === imageFiles.length) {
+                            state.batchIndex = 0;
+                            state.screenshot = state.batchImages[0].img;
+                            updateBatchUI();
+                            render();
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function updateBatchUI() {
+            const list = document.getElementById('batch-list');
+            const nav = document.getElementById('batch-nav');
+            
+            list.innerHTML = state.batchImages.map((item, i) => `
+                <div class="batch-item ${i === state.batchIndex ? 'active' : ''}" onclick="selectBatchItem(${i})">
+                    <img src="${item.img.src}" alt="">
+                    <div class="batch-item-info">
+                        <div class="batch-item-name">${item.name}</div>
+                        <div class="batch-item-size">${item.img.width} × ${item.img.height}</div>
+                    </div>
+                    <button class="batch-item-remove" onclick="event.stopPropagation(); removeBatchItem(${i})">×</button>
+                </div>
+            `).join('');
+            
+            nav.style.display = state.batchImages.length > 1 ? 'flex' : 'none';
+            document.getElementById('batch-counter').textContent = `${state.batchIndex + 1} / ${state.batchImages.length}`;
+            document.getElementById('export-btn-text').textContent = state.mode === 'batch' ? `Export All (${state.batchImages.length})` : 'Export PNG';
+        }
+
+        function selectBatchItem(index) {
+            state.batchIndex = index;
+            state.screenshot = state.batchImages[index].img;
+            updateBatchUI();
+            render();
+        }
+
+        function removeBatchItem(index) {
+            state.batchImages.splice(index, 1);
+            if (state.batchIndex >= state.batchImages.length) {
+                state.batchIndex = Math.max(0, state.batchImages.length - 1);
+            }
+            if (state.batchImages.length > 0) {
+                state.screenshot = state.batchImages[state.batchIndex].img;
+            } else {
+                state.screenshot = null;
+            }
+            updateBatchUI();
+            render();
+        }
+
+        function navigateBatch(dir) {
+            const newIndex = state.batchIndex + dir;
+            if (newIndex >= 0 && newIndex < state.batchImages.length) {
+                selectBatchItem(newIndex);
+            }
+        }
+
+        function setGradient(c1, c2, el) {
+            state.color1 = c1;
+            state.color2 = c2;
+            document.getElementById('color1').value = c1;
+            document.getElementById('color2').value = c2;
+            document.querySelectorAll('.gradient-preset').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        function updateSlider(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const value = parseInt(el.value);
+
+            // Determine suffix
+            let suffix = '%';
+            if (['gradient-angle', 'shadow-direction', 'rotate-x', 'rotate-y'].includes(id)) suffix = '°';
+            if (['corner-radius', 'shadow-distance', 'screenshot-offset-x', 'screenshot-offset-y', 'device-spacing', 'screenshot-padding', 'text-shadow-blur', 'text-shadow-offset-x', 'text-shadow-offset-y', 'text-bg-padding', 'text-bg-radius', 'logo-offset-x', 'logo-offset-y', 'bg-blur'].includes(id)) suffix = 'px';
+            if (['mesh-complexity', 'arrow-size'].includes(id)) suffix = '';
+
+            const valueEl = document.getElementById(id + '-value');
+            if (valueEl) valueEl.textContent = value + suffix;
+
+            switch(id) {
+                case 'text-size': state.textSize = value; break;
+                case 'letter-spacing': state.letterSpacing = value; break;
+                case 'gradient-angle': state.gradientAngle = value; break;
+                case 'device-scale': state.deviceScale = value; break;
+                case 'device-y': state.deviceY = value; break;
+                case 'corner-radius': state.cornerRadius = value; break;
+                case 'rotate-x': state.deviceRotateX = value; break;
+                case 'rotate-y': state.deviceRotateY = value; break;
+                case 'shadow-direction': state.shadowDirection = value; break;
+                case 'shadow-distance': state.shadowDistance = value; break;
+                case 'screenshot-zoom': state.screenshotZoom = value; break;
+                case 'screenshot-offset-x': state.screenshotOffsetX = value; break;
+                case 'screenshot-offset-y': state.screenshotOffsetY = value; break;
+                case 'screenshot-padding': state.screenshotPadding = value; break;
+                case 'device-spacing': state.deviceSpacing = value; break;
+                case 'mesh-complexity': state.meshComplexity = value; break;
+                case 'pattern-opacity': state.patternOpacity = value; break;
+                case 'pattern-scale': state.patternScale = value; break;
+                case 'bg-blur': state.backgroundBlur = value; break;
+                case 'vignette': state.vignette = value; break;
+                case 'text-shadow-blur': state.textShadowBlur = value; break;
+                case 'text-shadow-offset-x': state.textShadowOffsetX = value; break;
+                case 'text-shadow-offset-y': state.textShadowOffsetY = value; break;
+                case 'text-bg-opacity': state.textBgOpacity = value; break;
+                case 'text-bg-padding': state.textBgPadding = value; break;
+                case 'text-bg-radius': state.textBgRadius = value; break;
+                case 'logo-scale': state.logoScale = value; break;
+                case 'logo-offset-x': state.logoOffsetX = value; break;
+                case 'logo-offset-y': state.logoOffsetY = value; break;
+                case 'watermark-opacity': state.watermarkOpacity = value; break;
+                case 'arrow-size': state.arrowSize = value; break;
+                case 'qr-size': state.qrSize = value; break;
+            }
+            render();
+        }
+
+        function toggleOption(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.toggle('active');
+            const isActive = el.classList.contains('active');
+
+            switch(id) {
+                case 'show-frame': state.showFrame = isActive; break;
+                case 'text-top': state.textAtTop = isActive; break;
+                case 'drop-shadow': state.dropShadow = isActive; break;
+                case 'reflection': state.reflection = isActive; break;
+                case 'landscape-mode':
+                    state.landscapeMode = isActive;
+                    break;
+                case 'multi-device':
+                    state.multiDevice = isActive;
+                    document.getElementById('multi-device-config').style.display = isActive ? 'block' : 'none';
+                    break;
+                case 'text-stroke':
+                    state.textStroke = isActive;
+                    document.getElementById('text-stroke-controls').style.display = isActive ? 'block' : 'none';
+                    break;
+                case 'text-shadow-enabled':
+                    state.textShadowEnabled = isActive;
+                    break;
+                case 'text-background':
+                    state.textBackground = isActive;
+                    document.getElementById('text-bg-controls').style.display = isActive ? 'block' : 'none';
+                    break;
+                case 'logo-shadow':
+                    state.logoShadow = isActive;
+                    break;
+            }
+            render();
+        }
+
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const toggle = header.querySelector('.section-toggle');
+            content.classList.toggle('collapsed');
+            toggle.style.transform = content.classList.contains('collapsed') ? 'rotate(-90deg)' : '';
+        }
+
+        function setBadgePosition(pos, el) {
+            state.badgePosition = pos;
+            document.querySelectorAll('.badge-option').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        function render() {
+            // Update state from inputs
+            state.headline = document.getElementById('headline').value;
+            state.subheadline = document.getElementById('subheadline').value;
+            state.headlineFont = document.getElementById('headline-font').value;
+            state.bodyFont = document.getElementById('body-font').value;
+            state.headlineWeight = document.getElementById('headline-weight').value;
+            state.textColor = document.getElementById('text-color').value;
+            state.color1 = document.getElementById('color1').value;
+            state.color2 = document.getElementById('color2').value;
+            state.badgeText = document.getElementById('badge-text').value;
+            state.badgeColor = document.getElementById('badge-color').value;
+            state.badgeTextColor = document.getElementById('badge-text-color').value;
+
+            const device = devices[state.device];
+            
+            // Set canvas sizes
+            const maxPreviewHeight = window.innerHeight - 80;
+            const maxPreviewWidth = window.innerWidth - 400;
+            const scale = Math.min(maxPreviewWidth / device.width, maxPreviewHeight / device.height, 0.35);
+            
+            previewCanvas.width = device.width * scale;
+            previewCanvas.height = device.height * scale;
+            
+            exportCanvas.width = device.width;
+            exportCanvas.height = device.height;
+
+            // Render to both canvases
+            renderToCanvas(previewCtx, previewCanvas.width, previewCanvas.height, scale);
+            renderToCanvas(exportCtx, exportCanvas.width, exportCanvas.height, 1);
+        }
+
+        function renderToCanvas(ctx, width, height, scale) {
+            const device = devices[state.device];
+
+            // Draw background based on type
+            if (state.backgroundType === 'mesh') {
+                // Base color first
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(0, 0, width, height);
+                drawMeshGradient(ctx, width, height);
+            } else if (state.backgroundType === 'pattern') {
+                drawPattern(ctx, width, height, scale);
+            } else if (state.backgroundType === 'image' && state.backgroundImage) {
+                // Draw background image
+                const img = state.backgroundImage;
+                const imgAspect = img.width / img.height;
+                const canvasAspect = width / height;
+                let drawX = 0, drawY = 0, drawW = width, drawH = height;
+
+                if (state.backgroundImageFit === 'cover') {
+                    if (imgAspect > canvasAspect) {
+                        drawH = height;
+                        drawW = height * imgAspect;
+                        drawX = (width - drawW) / 2;
+                    } else {
+                        drawW = width;
+                        drawH = width / imgAspect;
+                        drawY = (height - drawH) / 2;
+                    }
+                } else if (state.backgroundImageFit === 'contain') {
+                    if (imgAspect > canvasAspect) {
+                        drawW = width;
+                        drawH = width / imgAspect;
+                        drawY = (height - drawH) / 2;
+                    } else {
+                        drawH = height;
+                        drawW = height * imgAspect;
+                        drawX = (width - drawW) / 2;
+                    }
+                    ctx.fillStyle = '#1a1a1a';
+                    ctx.fillRect(0, 0, width, height);
+                } else if (state.backgroundImageFit === 'tile') {
+                    const pattern = ctx.createPattern(img, 'repeat');
+                    ctx.fillStyle = pattern;
+                    ctx.fillRect(0, 0, width, height);
+                    drawX = -1; // Skip drawImage below
+                }
+
+                if (drawX >= 0) ctx.drawImage(img, drawX, drawY, drawW, drawH);
+            } else {
+                // Default gradient background
+                const angle = state.gradientAngle * Math.PI / 180;
+                const x1 = width / 2 - Math.cos(angle) * width;
+                const y1 = height / 2 - Math.sin(angle) * height;
+                const x2 = width / 2 + Math.cos(angle) * width;
+                const y2 = height / 2 + Math.sin(angle) * height;
+
+                const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+                gradient.addColorStop(0, state.color1);
+                gradient.addColorStop(1, state.color2);
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+            }
+
+            // Apply vignette
+            drawVignette(ctx, width, height, scale);
+
+            // Calculate layout
+            const padding = 80 * scale;
+            const textScale = (state.textSize / 100) * scale;
+            
+            // Device frame dimensions - use actual device screen ratio
+            const deviceScaleMultiplier = state.deviceScale / 100;
+            const frameWidth = width * 0.85 * deviceScaleMultiplier;
+            // Use device-specific aspect ratio for proper proportions
+            const deviceScreenRatio = state.showFrame ? device.screenRatio : (state.screenshot ? state.screenshot.height / state.screenshot.width : device.screenRatio);
+            const frameHeight = frameWidth * deviceScreenRatio;
+            const frameX = (width - frameWidth) / 2;
+            
+            // Text measurements
+            const headlineFontSize = Math.round(72 * textScale);
+            const subheadFontSize = Math.round(42 * textScale);
+            const letterSpacing = state.letterSpacing * scale * 0.1;
+            
+            // Calculate text height
+            ctx.font = `${state.headlineWeight} ${headlineFontSize}px "${state.headlineFont}", -apple-system, sans-serif`;
+            const headlineLines = state.headline ? wrapText(ctx, state.headline, width - padding * 2) : [];
+            const headlineHeight = headlineLines.length * headlineFontSize * 1.15;
+            
+            ctx.font = `400 ${subheadFontSize}px "${state.bodyFont}", -apple-system, sans-serif`;
+            const subheadLines = state.subheadline ? wrapText(ctx, state.subheadline, width - padding * 2) : [];
+            const subheadHeight = subheadLines.length * subheadFontSize * 1.3;
+            
+            const totalTextHeight = headlineHeight + (subheadLines.length > 0 ? subheadHeight + 20 * scale : 0);
+            
+            // Position based on deviceY slider and text position
+            let textY, frameY;
+            const availableSpace = height - totalTextHeight - frameHeight - padding * 2;
+            const deviceOffset = (state.deviceY / 100) * availableSpace;
+            
+            if (state.textAtTop) {
+                textY = padding + headlineFontSize;
+                frameY = padding + totalTextHeight + 40 * scale + deviceOffset;
+            } else {
+                frameY = padding + deviceOffset;
+                textY = frameY + frameHeight + 50 * scale + headlineFontSize;
+            }
+
+            // Draw reflection if enabled
+            if (state.reflection && state.screenshot) {
+                ctx.save();
+                ctx.globalAlpha = 0.15;
+                ctx.translate(0, height);
+                ctx.scale(1, -0.3);
+                drawDevice(ctx, frameX, height - frameY - frameHeight, frameWidth, frameHeight, scale, true);
+                ctx.restore();
+            }
+
+            // Draw device
+            drawDevice(ctx, frameX, frameY, frameWidth, frameHeight, scale, false);
+
+            // Draw text background/pill if enabled
+            if (state.textBackground && (state.headline || state.subheadline)) {
+                const bgPad = state.textBgPadding * scale;
+                const bgRad = state.textBgRadius * scale;
+                const textAreaWidth = width - padding * 2 + bgPad * 2;
+                const textAreaHeight = totalTextHeight + bgPad * 2;
+                const textAreaX = padding - bgPad;
+                const textAreaY = textY - headlineFontSize - bgPad + 10 * scale;
+
+                ctx.save();
+                ctx.globalAlpha = state.textBgOpacity / 100;
+                ctx.fillStyle = state.textBgColor;
+                roundedRect(ctx, textAreaX, textAreaY, textAreaWidth, textAreaHeight, bgRad);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Draw text
+            ctx.fillStyle = state.textColor;
+            ctx.textAlign = 'center';
+
+            // Apply text style effects
+            const applyTextStyle = (isHeadline) => {
+                switch(state.textStyle) {
+                    case 'neon':
+                        ctx.shadowColor = state.textColor;
+                        ctx.shadowBlur = 20 * scale;
+                        break;
+                    case 'sticker':
+                        if (state.textStroke) {
+                            ctx.lineWidth = (state.textStrokeWidth + 2) * scale;
+                            ctx.strokeStyle = state.textStrokeColor;
+                        }
+                        break;
+                    case 'glitch':
+                        // Will draw multiple offset copies
+                        break;
+                }
+            };
+
+            // Headline
+            if (state.headline) {
+                ctx.font = state.headlineWeight + ' ' + headlineFontSize + 'px "' + state.headlineFont + '", -apple-system, sans-serif';
+
+                // Apply custom text shadow
+                if (state.textShadowEnabled) {
+                    ctx.shadowColor = state.textShadowColor;
+                    ctx.shadowBlur = state.textShadowBlur * scale;
+                    ctx.shadowOffsetX = state.textShadowOffsetX * scale;
+                    ctx.shadowOffsetY = state.textShadowOffsetY * scale;
+                }
+
+                applyTextStyle(true);
+
+                // Draw text stroke if enabled
+                if (state.textStroke) {
+                    ctx.lineWidth = state.textStrokeWidth * scale;
+                    ctx.strokeStyle = state.textStrokeColor;
+                    headlineLines.forEach((line, i) => {
+                        const y = textY + i * headlineFontSize * 1.15;
+                        ctx.textAlign = 'center';
+                        ctx.strokeText(line, width / 2, y);
+                    });
+                }
+
+                // Draw glitch effect (if selected)
+                if (state.textStyle === 'glitch') {
+                    ctx.save();
+                    ctx.fillStyle = '#ff0000';
+                    ctx.globalAlpha = 0.5;
+                    headlineLines.forEach((line, i) => {
+                        ctx.fillText(line, width / 2 - 3 * scale, textY + i * headlineFontSize * 1.15);
+                    });
+                    ctx.fillStyle = '#00ffff';
+                    headlineLines.forEach((line, i) => {
+                        ctx.fillText(line, width / 2 + 3 * scale, textY + i * headlineFontSize * 1.15);
+                    });
+                    ctx.restore();
+                }
+
+                ctx.fillStyle = state.textColor;
+                headlineLines.forEach((line, i) => {
+                    const y = textY + i * headlineFontSize * 1.15;
+                    drawTextWithSpacing(ctx, line, width / 2, y, letterSpacing);
+                });
+            }
+
+            // Subheadline
+            if (state.subheadline) {
+                ctx.font = '400 ' + subheadFontSize + 'px "' + state.bodyFont + '", -apple-system, sans-serif';
+                ctx.fillStyle = state.textColor;
+                ctx.globalAlpha = 0.85;
+
+                if (state.textShadowEnabled) {
+                    ctx.shadowBlur = state.textShadowBlur * scale * 0.5;
+                }
+
+                const subY = textY + headlineHeight + 20 * scale;
+                subheadLines.forEach((line, i) => {
+                    drawTextWithSpacing(ctx, line, width / 2, subY + i * subheadFontSize * 1.3, letterSpacing * 0.5);
+                });
+                ctx.globalAlpha = 1;
+            }
+
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            // Draw badge
+            if (state.badgeText) {
+                drawBadge(ctx, width, height, scale);
+            }
+
+            // Draw star rating
+            drawStarRating(ctx, width, height, scale);
+
+            // Draw logo
+            drawLogo(ctx, width, height, scale);
+
+            // Draw arrows
+            drawArrows(ctx, width, height, scale);
+
+            // Draw watermark
+            drawWatermark(ctx, width, height, scale);
+
+            // Draw QR code
+            drawQRCode(ctx, width, height, scale);
+        }
+
+        function drawDevice(ctx, x, y, width, height, scale, isReflection) {
+            const radius = state.cornerRadius * scale;
+            const frameColor = getFrameColor();
+
+            // Apply 3D rotation transform if set
+            if ((state.deviceRotateX !== 0 || state.deviceRotateY !== 0) && !isReflection) {
+                ctx.save();
+                const centerX = x + width / 2;
+                const centerY = y + height / 2;
+
+                // Simple perspective simulation
+                const rotX = state.deviceRotateX * Math.PI / 180;
+                const rotY = state.deviceRotateY * Math.PI / 180;
+
+                ctx.translate(centerX, centerY);
+                // Skew based on rotation
+                ctx.transform(
+                    Math.cos(rotY),
+                    Math.sin(rotX) * 0.5,
+                    -Math.sin(rotY) * 0.5,
+                    Math.cos(rotX),
+                    0, 0
+                );
+                ctx.translate(-centerX, -centerY);
+            }
+
+            if (state.showFrame) {
+                // Drop shadow with direction
+                if (state.dropShadow && !isReflection) {
+                    const shadowAngle = state.shadowDirection * Math.PI / 180;
+                    const shadowDist = state.shadowDistance * scale;
+                    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                    ctx.shadowBlur = 60 * scale;
+                    ctx.shadowOffsetX = Math.cos(shadowAngle) * shadowDist;
+                    ctx.shadowOffsetY = Math.sin(shadowAngle) * shadowDist;
+                }
+
+                // Frame body with style color
+                ctx.fillStyle = frameColor;
+                roundedRect(ctx, x, y, width, height, radius);
+                ctx.fill();
+
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+
+                // Frame border highlight (subtle for clay, stronger for realistic)
+                const isRealistic = state.frameStyle === 'realistic';
+                ctx.strokeStyle = isRealistic ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.15)';
+                ctx.lineWidth = 2 * scale;
+                roundedRect(ctx, x, y, width, height, radius);
+                ctx.stroke();
+
+                // Screen bezel
+                const bezel = 10 * scale;
+                ctx.fillStyle = '#000';
+                roundedRect(ctx, x + bezel, y + bezel, width - bezel * 2, height - bezel * 2, radius - bezel/2);
+                ctx.fill();
+            }
+            
+            // Draw screenshot - fit entire image without cropping
+            if (state.screenshot) {
+                const innerPadding = state.screenshotPadding * scale;
+                const screenPadding = (state.showFrame ? 10 * scale : 0) + innerPadding;
+                const screenRadius = state.showFrame ? radius - 5 * scale : radius;
+                const screenX = x + screenPadding;
+                const screenY = y + screenPadding;
+                const screenWidth = width - screenPadding * 2;
+                const screenHeight = height - screenPadding * 2;
+
+                ctx.save();
+                if (screenRadius > 0) {
+                    roundedRect(ctx, screenX, screenY, screenWidth, screenHeight, screenRadius);
+                    ctx.clip();
+                }
+
+                // Fit image (contain, not cover) - no cropping
+                const imgAspect = state.screenshot.width / state.screenshot.height;
+                const screenAspect = screenWidth / screenHeight;
+
+                let drawWidth, drawHeight, drawX, drawY;
+                if (imgAspect > screenAspect) {
+                    // Image is wider - fit to width
+                    drawWidth = screenWidth;
+                    drawHeight = drawWidth / imgAspect;
+                    drawX = screenX;
+                    drawY = screenY + (screenHeight - drawHeight) / 2;
+                } else {
+                    // Image is taller - fit to height
+                    drawHeight = screenHeight;
+                    drawWidth = drawHeight * imgAspect;
+                    drawX = screenX + (screenWidth - drawWidth) / 2;
+                    drawY = screenY;
+                }
+
+                // Apply zoom and offset
+                const zoom = state.screenshotZoom / 100;
+                const zoomedWidth = drawWidth * zoom;
+                const zoomedHeight = drawHeight * zoom;
+                const offsetX = state.screenshotOffsetX * scale;
+                const offsetY = state.screenshotOffsetY * scale;
+
+                // Center the zoomed image and apply offset
+                const centerX = drawX + drawWidth / 2;
+                const centerY = drawY + drawHeight / 2;
+                const finalX = centerX - zoomedWidth / 2 + offsetX;
+                const finalY = centerY - zoomedHeight / 2 + offsetY;
+
+                // Fill background for letterboxing
+                ctx.fillStyle = '#000';
+                ctx.fillRect(screenX, screenY, screenWidth, screenHeight);
+
+                ctx.drawImage(state.screenshot, finalX, finalY, zoomedWidth, zoomedHeight);
+                ctx.restore();
+            } else {
+                // Placeholder
+                const screenPadding = state.showFrame ? 10 * scale : 0;
+                ctx.fillStyle = '#1a1a1a';
+                roundedRect(ctx, x + screenPadding, y + screenPadding, width - screenPadding * 2, height - screenPadding * 2, radius - 5 * scale);
+                ctx.fill();
+                
+                ctx.fillStyle = '#333';
+                ctx.font = '500 ' + (24 * scale) + 'px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Drop screenshot here', x + width / 2, y + height / 2);
+            }
+
+            // Restore context if rotation was applied
+            if ((state.deviceRotateX !== 0 || state.deviceRotateY !== 0) && !isReflection) {
+                ctx.restore();
+            }
+        }
+
+        function drawBadge(ctx, width, height, scale) {
+            const padding = 50 * scale;
+            const badgePadX = 24 * scale;
+            const badgePadY = 14 * scale;
+            const fontSize = 28 * scale;
+            
+            ctx.font = `700 ${fontSize}px "${state.headlineFont}", -apple-system, sans-serif`;
+            const textWidth = ctx.measureText(state.badgeText).width;
+            const badgeWidth = textWidth + badgePadX * 2;
+            const badgeHeight = fontSize + badgePadY * 2;
+            
+            let badgeX, badgeY;
+            switch (state.badgePosition) {
+                case 'top-left':
+                    badgeX = padding;
+                    badgeY = padding;
+                    break;
+                case 'top-right':
+                    badgeX = width - padding - badgeWidth;
+                    badgeY = padding;
+                    break;
+                case 'bottom-left':
+                    badgeX = padding;
+                    badgeY = height - padding - badgeHeight;
+                    break;
+                case 'bottom-right':
+                    badgeX = width - padding - badgeWidth;
+                    badgeY = height - padding - badgeHeight;
+                    break;
+            }
+            
+            // Badge background
+            ctx.fillStyle = state.badgeColor;
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowBlur = 15 * scale;
+            ctx.shadowOffsetY = 4 * scale;
+            roundedRect(ctx, badgeX, badgeY, badgeWidth, badgeHeight, 10 * scale);
+            ctx.fill();
+            
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            
+            // Badge text
+            ctx.fillStyle = state.badgeTextColor;
+            ctx.textAlign = 'center';
+            ctx.fillText(state.badgeText, badgeX + badgeWidth / 2, badgeY + badgeHeight / 2 + fontSize * 0.35);
+        }
+
+        function drawTextWithSpacing(ctx, text, x, y, spacing) {
+            if (spacing === 0) {
+                ctx.fillText(text, x, y);
+                return;
+            }
+            
+            const chars = text.split('');
+            const totalWidth = ctx.measureText(text).width + spacing * (chars.length - 1);
+            let currentX = x - totalWidth / 2;
+            
+            ctx.textAlign = 'left';
+            chars.forEach(char => {
+                ctx.fillText(char, currentX, y);
+                currentX += ctx.measureText(char).width + spacing;
+            });
+            ctx.textAlign = 'center';
+        }
+
+        function roundedRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        function wrapText(ctx, text, maxWidth) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            
+            words.forEach(word => {
+                const testLine = currentLine ? currentLine + ' ' + word : word;
+                const metrics = ctx.measureText(testLine);
+                
+                if (metrics.width > maxWidth && currentLine) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = testLine;
+                }
+            });
+            
+            if (currentLine) lines.push(currentLine);
+            return lines;
+        }
+
+        function exportImage() {
+            if (state.mode === 'batch' && state.batchImages.length > 0) {
+                exportBatch('png');
+            } else {
+                downloadCanvas('png');
+            }
+        }
+
+        function exportAsJPG() {
+            if (state.mode === 'batch' && state.batchImages.length > 0) {
+                exportBatch('jpg');
+            } else {
+                downloadCanvas('jpg');
+            }
+        }
+
+        function downloadCanvas(format) {
+            const device = devices[state.device];
+            const link = document.createElement('a');
+            const ext = format === 'jpg' ? 'jpg' : 'png';
+            const mime = format === 'jpg' ? 'image/jpeg' : 'image/png';
+            const quality = format === 'jpg' ? 0.92 : undefined;
+            
+            link.download = `app-screenshot-${state.device}-${Date.now()}.${ext}`;
+            link.href = exportCanvas.toDataURL(mime, quality);
+            link.click();
+        }
+
+        async function exportBatch(format) {
+            const originalIndex = state.batchIndex;
+            const ext = format === 'jpg' ? 'jpg' : 'png';
+            const mime = format === 'jpg' ? 'image/jpeg' : 'image/png';
+            const quality = format === 'jpg' ? 0.92 : undefined;
+            
+            for (let i = 0; i < state.batchImages.length; i++) {
+                state.screenshot = state.batchImages[i].img;
+                render();
+                
+                // Small delay to ensure render completes
+                await new Promise(r => setTimeout(r, 100));
+                
+                const link = document.createElement('a');
+                const baseName = state.batchImages[i].name.replace(/\.[^/.]+$/, '');
+                link.download = `${baseName}-${state.device}.${ext}`;
+                link.href = exportCanvas.toDataURL(mime, quality);
+                link.click();
+                
+                await new Promise(r => setTimeout(r, 200));
+            }
+            
+            // Restore original
+            state.batchIndex = originalIndex;
+            state.screenshot = state.batchImages[originalIndex].img;
+            render();
+        }
+
+        // ============== NEW FEATURE HANDLERS ==============
+
+        // Device Category Selection
+        function selectDeviceCategory(category) {
+            document.querySelectorAll('.device-category-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === category));
+            updateDeviceDropdown(category);
+        }
+
+        function updateDeviceDropdown(category) {
+            const select = document.getElementById('device-select');
+            const deviceList = Object.entries(devices).filter(([k, v]) => v.category === category);
+
+            // Clear existing options safely
+            while (select.firstChild) select.removeChild(select.firstChild);
+
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = deviceCategories[category].name + ' Devices';
+
+            deviceList.forEach(([key, dev]) => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = dev.name + ' (' + dev.width + '×' + dev.height + ')';
+                if (key === state.device) option.selected = true;
+                optgroup.appendChild(option);
+            });
+
+            select.appendChild(optgroup);
+
+            // If current device not in category, select first
+            if (!deviceList.find(([k]) => k === state.device)) {
+                state.device = deviceList[0][0];
+                select.value = state.device;
+                render();
+            }
+        }
+
+        // Background Type
+        function setBackgroundType(type) {
+            state.backgroundType = type;
+            document.querySelectorAll('.bg-type-tab').forEach(t => t.classList.toggle('active', t.dataset.type === type));
+
+            document.getElementById('bg-gradient-controls').style.display = type === 'gradient' ? 'block' : 'none';
+            document.getElementById('bg-mesh-controls').style.display = type === 'mesh' ? 'block' : 'none';
+            document.getElementById('bg-image-controls').style.display = type === 'image' ? 'block' : 'none';
+            document.getElementById('bg-pattern-controls').style.display = type === 'pattern' ? 'block' : 'none';
+            render();
+        }
+
+        function setPattern(pattern, el) {
+            state.backgroundPattern = pattern;
+            document.querySelectorAll('.pattern-btn').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        function updateMeshColors() {
+            state.meshColors = [
+                document.getElementById('mesh-color-1').value,
+                document.getElementById('mesh-color-2').value,
+                document.getElementById('mesh-color-3').value,
+                document.getElementById('mesh-color-4').value
+            ];
+            render();
+        }
+
+        function handleBgImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        state.backgroundImage = img;
+                        document.getElementById('bg-image-upload').classList.add('has-image');
+                        render();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Frame Style
+        function setFrameStyle(style, el) {
+            state.frameStyle = style;
+            document.querySelectorAll('.frame-style-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('frame-custom-color-group').style.display = style === 'clay-custom' ? 'block' : 'none';
+            render();
+        }
+
+        // Logo
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        state.logoImage = img;
+                        document.getElementById('logo-upload').classList.add('has-logo');
+                        document.getElementById('remove-logo-btn').disabled = false;
+                        render();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeLogo() {
+            state.logoImage = null;
+            document.getElementById('logo-upload').classList.remove('has-logo');
+            document.getElementById('remove-logo-btn').disabled = true;
+            render();
+        }
+
+        function setLogoPosition(pos, el) {
+            state.logoPosition = pos;
+            document.querySelectorAll('.position-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        // Second Screenshot for multi-device
+        function handleSecondScreenshotUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        state.secondScreenshot = img;
+                        render();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Text Style
+        function setTextStyle(style, el) {
+            state.textStyle = style;
+            document.querySelectorAll('.text-style-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        // Star Rating
+        function setStarPosition(pos, el) {
+            state.starRatingPosition = pos;
+            el.parentElement.querySelectorAll('.badge-option').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        // Watermark
+        function setWatermarkPosition(pos, el) {
+            state.watermarkPosition = pos;
+            el.parentElement.querySelectorAll('.badge-option').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        // Arrow Tool
+        let arrowToolActive = false;
+        let arrowStart = null;
+
+        function toggleArrowTool() {
+            arrowToolActive = !arrowToolActive;
+            document.getElementById('arrow-tool').classList.toggle('active', arrowToolActive);
+            previewCanvas.style.cursor = arrowToolActive ? 'crosshair' : 'default';
+        }
+
+        function clearArrows() {
+            state.arrows = [];
+            render();
+        }
+
+        previewCanvas.addEventListener('mousedown', (e) => {
+            if (!arrowToolActive) return;
+            const rect = previewCanvas.getBoundingClientRect();
+            arrowStart = {
+                x: (e.clientX - rect.left) / previewCanvas.width,
+                y: (e.clientY - rect.top) / previewCanvas.height
+            };
+        });
+
+        previewCanvas.addEventListener('mouseup', (e) => {
+            if (!arrowToolActive || !arrowStart) return;
+            const rect = previewCanvas.getBoundingClientRect();
+            const arrowEnd = {
+                x: (e.clientX - rect.left) / previewCanvas.width,
+                y: (e.clientY - rect.top) / previewCanvas.height
+            };
+            state.arrows.push({
+                start: arrowStart,
+                end: arrowEnd,
+                color: document.getElementById('arrow-color').value,
+                size: parseInt(document.getElementById('arrow-size').value)
+            });
+            arrowStart = null;
+            render();
+        });
+
+        // Templates
+        const templates = {
+            minimal: { color1: '#000000', color2: '#333333', textColor: '#ffffff', frameStyle: 'clay-black' },
+            vibrant: { color1: '#f093fb', color2: '#f5576c', textColor: '#ffffff', frameStyle: 'clay-white' },
+            clean: { color1: '#f5f7fa', color2: '#c3cfe2', textColor: '#333333', frameStyle: 'clay-white' },
+            neon: { color1: '#0f0c29', color2: '#302b63', textColor: '#00ffff', textStyle: 'neon', frameStyle: 'realistic' },
+            nature: { color1: '#43e97b', color2: '#38f9d7', textColor: '#ffffff', frameStyle: 'clay-white' },
+            sunset: { color1: '#fa709a', color2: '#fee140', textColor: '#ffffff', frameStyle: 'clay-gold' }
+        };
+
+        function applyTemplate(name) {
+            const t = templates[name];
+            if (!t) return;
+
+            state.color1 = t.color1;
+            state.color2 = t.color2;
+            state.textColor = t.textColor;
+            state.frameStyle = t.frameStyle || 'realistic';
+            state.textStyle = t.textStyle || 'normal';
+
+            document.getElementById('color1').value = t.color1;
+            document.getElementById('color2').value = t.color2;
+            document.getElementById('text-color').value = t.textColor;
+
+            render();
+            showToast('Applied "' + name + '" template');
+        }
+
+        // Toast Notification
+        function showToast(message) {
+            let toast = document.querySelector('.toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Undo/Redo
+        function saveHistory() {
+            const stateCopy = JSON.parse(JSON.stringify({...state, screenshot: null, secondScreenshot: null, backgroundImage: null, logoImage: null}));
+            if (historyIndex < historyStack.length - 1) {
+                historyStack = historyStack.slice(0, historyIndex + 1);
+            }
+            historyStack.push(stateCopy);
+            if (historyStack.length > MAX_HISTORY) historyStack.shift();
+            historyIndex = historyStack.length - 1;
+            updateUndoRedoButtons();
+        }
+
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                applyHistoryState(historyStack[historyIndex]);
+            }
+        }
+
+        function redo() {
+            if (historyIndex < historyStack.length - 1) {
+                historyIndex++;
+                applyHistoryState(historyStack[historyIndex]);
+            }
+        }
+
+        function applyHistoryState(savedState) {
+            Object.keys(savedState).forEach(key => {
+                if (key !== 'screenshot' && key !== 'secondScreenshot' && key !== 'backgroundImage' && key !== 'logoImage') {
+                    state[key] = savedState[key];
+                }
+            });
+            render();
+            updateUndoRedoButtons();
+        }
+
+        function updateUndoRedoButtons() {
+            document.getElementById('undo-btn').disabled = historyIndex <= 0;
+            document.getElementById('redo-btn').disabled = historyIndex >= historyStack.length - 1;
+        }
+
+        // Save/Load Project
+        function saveProject() {
+            const projectData = {
+                version: 1,
+                state: {...state, screenshot: null, secondScreenshot: null, backgroundImage: null, logoImage: null, batchImages: []}
+            };
+            const blob = new Blob([JSON.stringify(projectData, null, 2)], {type: 'application/json'});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'screenshot-studio-project-' + Date.now() + '.json';
+            link.click();
+            showToast('Project saved!');
+        }
+
+        function loadProject(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const project = JSON.parse(e.target.result);
+                    if (project.state) {
+                        Object.keys(project.state).forEach(key => {
+                            if (state.hasOwnProperty(key)) {
+                                state[key] = project.state[key];
+                            }
+                        });
+                        render();
+                        showToast('Project loaded!');
+                    }
+                } catch (err) {
+                    showToast('Failed to load project');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Custom Font Upload
+        function handleFontUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const fontName = file.name.replace(/\.[^/.]+$/, '');
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const fontFace = new FontFace(fontName, 'url(' + e.target.result + ')');
+                fontFace.load().then(loadedFont => {
+                    document.fonts.add(loadedFont);
+                    state.customFonts.push(fontName);
+
+                    // Add to font dropdowns safely
+                    const option1 = document.createElement('option');
+                    option1.value = fontName;
+                    option1.textContent = fontName + ' (Custom)';
+                    const option2 = option1.cloneNode(true);
+
+                    document.getElementById('headline-font').appendChild(option1);
+                    document.getElementById('body-font').appendChild(option2);
+
+                    document.getElementById('custom-fonts-list').textContent = 'Loaded: ' + state.customFonts.join(', ');
+                    showToast('Font "' + fontName + '" loaded!');
+                }).catch(err => {
+                    showToast('Failed to load font');
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Eyedropper / Color Picker from Screenshot
+        function activateEyedropper() {
+            if (!state.screenshot) {
+                showToast('Upload a screenshot first');
+                return;
+            }
+            previewCanvas.style.cursor = 'crosshair';
+            previewCanvas.addEventListener('click', pickColor, {once: true});
+            showToast('Click on the preview to pick a color');
+        }
+
+        function pickColor(e) {
+            const rect = previewCanvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (previewCanvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (previewCanvas.height / rect.height);
+
+            const pixel = previewCtx.getImageData(x, y, 1, 1).data;
+            const color = '#' + [pixel[0], pixel[1], pixel[2]].map(c => c.toString(16).padStart(2, '0')).join('');
+
+            state.color1 = color;
+            document.getElementById('color1').value = color;
+            previewCanvas.style.cursor = 'default';
+            render();
+            showToast('Picked color: ' + color);
+        }
+
+        // Multi-size Export
+        let selectedExportSizes = ['current'];
+
+        function toggleExportSize(size, el) {
+            if (size === 'current') {
+                selectedExportSizes = ['current'];
+                document.querySelectorAll('.export-size-btn').forEach(b => b.classList.remove('selected'));
+                el.classList.add('selected');
+            } else {
+                const curIdx = selectedExportSizes.indexOf('current');
+                if (curIdx > -1) {
+                    selectedExportSizes.splice(curIdx, 1);
+                    document.querySelector('.export-size-btn[data-size="current"]').classList.remove('selected');
+                }
+
+                const idx = selectedExportSizes.indexOf(size);
+                if (idx > -1) {
+                    selectedExportSizes.splice(idx, 1);
+                    el.classList.remove('selected');
+                } else {
+                    selectedExportSizes.push(size);
+                    el.classList.add('selected');
+                }
+
+                if (selectedExportSizes.length === 0) {
+                    selectedExportSizes = ['current'];
+                    document.querySelector('.export-size-btn[data-size="current"]').classList.add('selected');
+                }
+            }
+
+            document.getElementById('zip-export-btn').style.display = selectedExportSizes.length > 1 ? 'flex' : 'none';
+        }
+
+        // Multi-size Export function
+        async function exportAsZIP() {
+            showToast('Exporting multiple sizes...');
+            const originalDevice = state.device;
+
+            for (const size of selectedExportSizes) {
+                if (size !== 'current' && devices[size]) {
+                    state.device = size;
+                    render();
+                    await new Promise(r => setTimeout(r, 100));
+                    downloadCanvas('png');
+                    await new Promise(r => setTimeout(r, 200));
+                }
+            }
+
+            if (selectedExportSizes.includes('current') || !selectedExportSizes.some(s => devices[s])) {
+                state.device = originalDevice;
+                render();
+                await new Promise(r => setTimeout(r, 100));
+                downloadCanvas('png');
+            }
+
+            state.device = originalDevice;
+            render();
+            showToast('Export complete!');
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Cmd/Ctrl + Z = Undo
+            if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
+                e.preventDefault();
+                undo();
+            }
+            // Cmd/Ctrl + Shift + Z or Cmd/Ctrl + Y = Redo
+            if ((e.metaKey || e.ctrlKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+                e.preventDefault();
+                redo();
+            }
+            // Cmd/Ctrl + S = Save Project
+            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                e.preventDefault();
+                saveProject();
+            }
+            // Cmd/Ctrl + E = Export
+            if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
+                e.preventDefault();
+                exportImage();
+            }
+        });
+
+        // Draw helpers for new features
+        function drawLogo(ctx, width, height, scale) {
+            if (!state.logoImage) return;
+
+            const logoSize = (width * state.logoScale / 100);
+            const padding = 50 * scale;
+            const offsetX = state.logoOffsetX * scale;
+            const offsetY = state.logoOffsetY * scale;
+
+            let logoX, logoY;
+            const pos = state.logoPosition;
+
+            // Horizontal position
+            if (pos.includes('left')) logoX = padding + offsetX;
+            else if (pos.includes('right')) logoX = width - padding - logoSize + offsetX;
+            else logoX = (width - logoSize) / 2 + offsetX;
+
+            // Vertical position
+            if (pos.includes('top')) logoY = padding + offsetY;
+            else if (pos.includes('bottom')) logoY = height - padding - logoSize + offsetY;
+            else logoY = (height - logoSize) / 2 + offsetY;
+
+            if (state.logoShadow) {
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowBlur = 15 * scale;
+                ctx.shadowOffsetY = 5 * scale;
+            }
+
+            // Maintain aspect ratio
+            const aspect = state.logoImage.width / state.logoImage.height;
+            const drawW = aspect > 1 ? logoSize : logoSize * aspect;
+            const drawH = aspect > 1 ? logoSize / aspect : logoSize;
+
+            ctx.drawImage(state.logoImage, logoX, logoY, drawW, drawH);
+
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+        }
+
+        function drawArrows(ctx, width, height, scale) {
+            state.arrows.forEach(arrow => {
+                const startX = arrow.start.x * width;
+                const startY = arrow.start.y * height;
+                const endX = arrow.end.x * width;
+                const endY = arrow.end.y * height;
+
+                ctx.strokeStyle = arrow.color;
+                ctx.lineWidth = arrow.size * scale;
+                ctx.lineCap = 'round';
+
+                // Draw line
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+
+                // Draw arrowhead
+                const angle = Math.atan2(endY - startY, endX - startX);
+                const headLen = 15 * scale;
+                ctx.beginPath();
+                ctx.moveTo(endX, endY);
+                ctx.lineTo(endX - headLen * Math.cos(angle - Math.PI / 6), endY - headLen * Math.sin(angle - Math.PI / 6));
+                ctx.moveTo(endX, endY);
+                ctx.lineTo(endX - headLen * Math.cos(angle + Math.PI / 6), endY - headLen * Math.sin(angle + Math.PI / 6));
+                ctx.stroke();
+            });
+        }
+
+        function drawStarRating(ctx, width, height, scale) {
+            const rating = document.getElementById('star-rating').value;
+            if (!rating) return;
+
+            state.starRating = rating;
+            const fontSize = 32 * scale;
+            const padding = 50 * scale;
+
+            ctx.font = '700 ' + fontSize + 'px -apple-system, sans-serif';
+            ctx.fillStyle = '#ffcc00';
+            ctx.textAlign = 'center';
+
+            const stars = '★★★★★';
+            const text = stars + ' ' + rating;
+            const y = state.starRatingPosition === 'top' ? padding + fontSize : height - padding;
+
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowBlur = 10 * scale;
+            ctx.fillText(text, width / 2, y);
+            ctx.shadowBlur = 0;
+        }
+
+        function drawWatermark(ctx, width, height, scale) {
+            if (!state.watermark) return;
+
+            const fontSize = 18 * scale;
+            const padding = 30 * scale;
+
+            ctx.font = '400 ' + fontSize + 'px -apple-system, sans-serif';
+            ctx.fillStyle = 'rgba(255,255,255,' + (state.watermarkOpacity / 100) + ')';
+
+            let x, align;
+            if (state.watermarkPosition === 'bottom-left') {
+                x = padding;
+                align = 'left';
+            } else if (state.watermarkPosition === 'bottom-center') {
+                x = width / 2;
+                align = 'center';
+            } else {
+                x = width - padding;
+                align = 'right';
+            }
+
+            ctx.textAlign = align;
+            ctx.fillText(state.watermark, x, height - padding);
+        }
+
+        function drawPattern(ctx, width, height, scale) {
+            if (state.backgroundType !== 'pattern' || state.backgroundPattern === 'none') return;
+
+            const baseColor = document.getElementById('pattern-base-color').value;
+
+            // Draw base color first
+            ctx.fillStyle = baseColor;
+            ctx.fillRect(0, 0, width, height);
+
+            const patternScale = state.patternScale / 100;
+            const opacity = state.patternOpacity / 100;
+            const pColor = state.patternColor;
+
+            ctx.globalAlpha = opacity;
+            ctx.fillStyle = pColor;
+            ctx.strokeStyle = pColor;
+            ctx.lineWidth = 1 * scale;
+
+            const spacing = 30 * scale * patternScale;
+
+            switch(state.backgroundPattern) {
+                case 'dots':
+                    for (let x = spacing; x < width; x += spacing) {
+                        for (let y = spacing; y < height; y += spacing) {
+                            ctx.beginPath();
+                            ctx.arc(x, y, 3 * scale * patternScale, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                    break;
+                case 'lines':
+                    for (let x = 0; x < width + height; x += spacing) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x - height, height);
+                        ctx.stroke();
+                    }
+                    break;
+                case 'waves':
+                    for (let y = spacing; y < height; y += spacing) {
+                        ctx.beginPath();
+                        for (let x = 0; x < width; x += 5) {
+                            ctx.lineTo(x, y + Math.sin(x / (20 * patternScale)) * 10 * scale);
+                        }
+                        ctx.stroke();
+                    }
+                    break;
+                case 'grid':
+                    for (let x = spacing; x < width; x += spacing) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, height);
+                        ctx.stroke();
+                    }
+                    for (let y = spacing; y < height; y += spacing) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(width, y);
+                        ctx.stroke();
+                    }
+                    break;
+                case 'noise':
+                    const imageData = ctx.getImageData(0, 0, width, height);
+                    const data = imageData.data;
+                    for (let i = 0; i < data.length; i += 4) {
+                        const noise = (Math.random() - 0.5) * 50 * opacity;
+                        data[i] = Math.min(255, Math.max(0, data[i] + noise));
+                        data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
+                        data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
+                    }
+                    ctx.putImageData(imageData, 0, 0);
+                    break;
+                case 'chevron':
+                    const chevSpacing = spacing * 2;
+                    for (let y = 0; y < height; y += chevSpacing) {
+                        ctx.beginPath();
+                        for (let x = 0; x < width; x += chevSpacing) {
+                            ctx.moveTo(x, y + chevSpacing / 2);
+                            ctx.lineTo(x + chevSpacing / 2, y);
+                            ctx.lineTo(x + chevSpacing, y + chevSpacing / 2);
+                        }
+                        ctx.stroke();
+                    }
+                    break;
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function drawMeshGradient(ctx, width, height) {
+            // Simple 4-point mesh gradient simulation
+            const colors = state.meshColors;
+            const cx = width / 2;
+            const cy = height / 2;
+
+            // Draw overlapping radial gradients
+            colors.forEach((color, i) => {
+                const angle = (i / colors.length) * Math.PI * 2;
+                const x = cx + Math.cos(angle) * (width / 3);
+                const y = cy + Math.sin(angle) * (height / 3);
+                const radius = Math.max(width, height) * 0.6;
+
+                const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                grad.addColorStop(0, color);
+                grad.addColorStop(1, 'transparent');
+
+                ctx.globalCompositeOperation = 'screen';
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, width, height);
+            });
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+        function drawVignette(ctx, width, height, scale) {
+            if (state.vignette <= 0) return;
+
+            const intensity = state.vignette / 100;
+            const gradient = ctx.createRadialGradient(
+                width / 2, height / 2, 0,
+                width / 2, height / 2, Math.max(width, height) * 0.7
+            );
+            gradient.addColorStop(0, 'transparent');
+            gradient.addColorStop(1, 'rgba(0,0,0,' + intensity + ')');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        // Get frame color based on style
+        function getFrameColor() {
+            switch(state.frameStyle) {
+                case 'clay-white': return '#f0f0f0';
+                case 'clay-black': return '#2a2a2a';
+                case 'clay-gold': return '#d4af37';
+                case 'clay-silver': return '#c0c0c0';
+                case 'clay-custom': return state.frameCustomColor;
+                default: return '#1a1a1a';
+            }
+        }
+
+        // QR Code Generator (simple matrix-based)
+        function generateQR() {
+            const text = document.getElementById('qr-text').value;
+            if (!text) {
+                state.qrText = '';
+                state.qrImage = null;
+                render();
+                return;
+            }
+            state.qrText = text;
+
+            // Create a simple QR code canvas using API service
+            // For offline use, we generate a placeholder pattern
+            const size = 256;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Generate simple pattern based on text hash (placeholder for real QR)
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, size, size);
+            ctx.fillStyle = '#000000';
+
+            // Simple hash-based pattern generation
+            const hash = text.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+            const cellSize = size / 21;
+
+            // Draw finder patterns (corners)
+            drawFinderPattern(ctx, 0, 0, cellSize);
+            drawFinderPattern(ctx, size - 7 * cellSize, 0, cellSize);
+            drawFinderPattern(ctx, 0, size - 7 * cellSize, cellSize);
+
+            // Draw data pattern based on text hash
+            for (let i = 8; i < 13; i++) {
+                for (let j = 8; j < 13; j++) {
+                    const bit = ((hash + i * j) % 7) < 4;
+                    if (bit) {
+                        ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+
+            // Draw timing patterns
+            for (let i = 8; i < 13; i++) {
+                if (i % 2 === 0) {
+                    ctx.fillRect(i * cellSize, 6 * cellSize, cellSize, cellSize);
+                    ctx.fillRect(6 * cellSize, i * cellSize, cellSize, cellSize);
+                }
+            }
+
+            // Create image from canvas
+            const img = new Image();
+            img.onload = () => {
+                state.qrImage = img;
+                render();
+            };
+            img.src = canvas.toDataURL();
+        }
+
+        function drawFinderPattern(ctx, x, y, cell) {
+            // Outer black border
+            ctx.fillRect(x, y, 7 * cell, 7 * cell);
+            // Inner white
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(x + cell, y + cell, 5 * cell, 5 * cell);
+            // Center black
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(x + 2 * cell, y + 2 * cell, 3 * cell, 3 * cell);
+        }
+
+        function setQRPosition(pos, el) {
+            state.qrPosition = pos;
+            el.parentElement.querySelectorAll('.badge-option').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
+        function drawQRCode(ctx, width, height, scale) {
+            if (!state.qrImage) return;
+
+            const size = width * (state.qrSize / 100);
+            const padding = 40 * scale;
+
+            let x, y;
+            if (state.qrPosition === 'bottom-left') {
+                x = padding;
+                y = height - padding - size;
+            } else {
+                x = width - padding - size;
+                y = height - padding - size;
+            }
+
+            // White background for QR
+            ctx.fillStyle = '#ffffff';
+            const bgPad = 8 * scale;
+            ctx.fillRect(x - bgPad, y - bgPad, size + bgPad * 2, size + bgPad * 2);
+
+            ctx.drawImage(state.qrImage, x, y, size, size);
+        }
+
+        // Auto-contrast text color
+        function getAutoContrastColor() {
+            // Sample the background color from the center of the canvas
+            const tempCanvas = document.createElement('canvas');
+            const device = devices[state.device];
+            tempCanvas.width = 100;
+            tempCanvas.height = 100;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            // Draw a small version of the background
+            if (state.backgroundType === 'gradient') {
+                const gradient = tempCtx.createLinearGradient(0, 0, 100, 100);
+                gradient.addColorStop(0, state.color1);
+                gradient.addColorStop(1, state.color2);
+                tempCtx.fillStyle = gradient;
+                tempCtx.fillRect(0, 0, 100, 100);
+            } else {
+                tempCtx.fillStyle = state.color1;
+                tempCtx.fillRect(0, 0, 100, 100);
+            }
+
+            // Sample pixels
+            const imageData = tempCtx.getImageData(0, 0, 100, 100).data;
+            let r = 0, g = 0, b = 0, count = 0;
+
+            for (let i = 0; i < imageData.length; i += 4) {
+                r += imageData[i];
+                g += imageData[i + 1];
+                b += imageData[i + 2];
+                count++;
+            }
+
+            r = Math.round(r / count);
+            g = Math.round(g / count);
+            b = Math.round(b / count);
+
+            // Calculate luminance
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+            // Return black or white based on luminance
+            return luminance > 0.5 ? '#000000' : '#ffffff';
+        }
+
+        function toggleAutoContrast() {
+            state.autoContrast = !state.autoContrast;
+            if (state.autoContrast) {
+                const color = getAutoContrastColor();
+                state.textColor = color;
+                document.getElementById('text-color').value = color;
+                showToast('Auto-contrast: ' + (color === '#ffffff' ? 'White' : 'Black') + ' text');
+            }
+            render();
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => render());
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
